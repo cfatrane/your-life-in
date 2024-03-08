@@ -1,0 +1,121 @@
+module.exports = {
+  root: true,
+  env: { browser: true, es2020: true },
+  extends: [
+    'eslint:recommended',
+    'plugin:@typescript-eslint/recommended',
+    'plugin:react/recommended',
+    'plugin:react/jsx-runtime',
+    'plugin:react-hooks/recommended',
+    'plugin:import/recommended',
+    'plugin:import/typescript',
+  ],
+  ignorePatterns: ['dist', '.eslintrc.cjs'],
+  parser: '@typescript-eslint/parser',
+  plugins: ['react-refresh'],
+  rules: {
+    'import/order': [
+      2,
+      {
+        groups: [
+          'builtin',
+          'external',
+          'internal',
+          'parent',
+          'sibling',
+          'index',
+          'type',
+        ],
+        'newlines-between': 'always',
+        pathGroups: [
+          {
+            pattern: 'react',
+            group: 'builtin',
+            position: 'before',
+          },
+          {
+            pattern: 'vite',
+            group: 'builtin',
+            position: 'before',
+          },
+          {
+            pattern: 'api/**',
+            group: 'internal',
+            position: 'after',
+          },
+          {
+            pattern: 'assets/**',
+            group: 'internal',
+            position: 'after',
+          },
+
+          {
+            pattern: 'components/**',
+            group: 'internal',
+            position: 'after',
+          },
+          {
+            pattern: 'constants/**',
+            group: 'internal',
+            position: 'after',
+          },
+          {
+            pattern: 'helpers/**',
+            group: 'internal',
+            position: 'after',
+          },
+          {
+            pattern: 'pages/**',
+            group: 'internal',
+            position: 'after',
+          },
+          {
+            pattern: 'redux/**',
+            group: 'internal',
+            position: 'after',
+          },
+          {
+            pattern: 'routes/**',
+            group: 'internal',
+            position: 'after',
+          },
+          {
+            pattern: 'type/**',
+            group: 'internal',
+            position: 'after',
+          },
+          {
+            pattern: 'utils/**',
+            group: 'internal',
+            position: 'after',
+          },
+        ],
+        distinctGroup: true,
+        pathGroupsExcludedImportTypes: ['react'],
+        alphabetize: {
+          order:
+            'asc' /* sort in ascending order. Options: ['ignore', 'asc', 'desc'] */,
+          caseInsensitive: true /* ignore case. Options: [true, false] */,
+        },
+      },
+    ],
+
+    // React
+    'react/jsx-newline': 1,
+    'react/jsx-no-useless-fragment': [2, { allowExpressions: true }],
+    'react/jsx-sort-props': [1, { ignoreCase: true }],
+
+    'react-refresh/only-export-components': [
+      'warn',
+      { allowConstantExport: true },
+    ],
+  },
+  settings: {
+    'import/resolver': {
+      node: {
+        extensions: ['.js', '.jsx', '.ts', '.tsx'],
+      },
+      typescript: true,
+    },
+  },
+};
