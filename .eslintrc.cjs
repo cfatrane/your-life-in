@@ -9,10 +9,12 @@ module.exports = {
     'plugin:react-hooks/recommended',
     'plugin:import/recommended',
     'plugin:import/typescript',
+    'plugin:tailwindcss/recommended',
+    'plugin:prettier/recommended',
   ],
   ignorePatterns: ['dist', '.eslintrc.cjs'],
   parser: '@typescript-eslint/parser',
-  plugins: ['react-refresh'],
+  plugins: ['react-refresh', 'prettier'],
   rules: {
     'import/order': [
       2,
@@ -50,7 +52,7 @@ module.exports = {
           },
 
           {
-            pattern: 'components/**',
+            pattern: '@/components/**',
             group: 'internal',
             position: 'after',
           },
@@ -116,6 +118,9 @@ module.exports = {
         extensions: ['.js', '.jsx', '.ts', '.tsx'],
       },
       typescript: true,
+    },
+    react: {
+      version: 'detect',
     },
   },
 };
