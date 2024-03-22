@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import Tooltip from "@mui/material/Tooltip";
 
-type Props = { isActive: boolean; weekNumber: any };
+type Props = { isActive: boolean; weekNumber: number };
 
 function Day({ isActive, weekNumber }: Props) {
   const [title, setTitle] = useState("");
@@ -20,10 +20,11 @@ function Day({ isActive, weekNumber }: Props) {
   return (
     <Tooltip title={title}>
       <div
-        onMouseEnter={() => {
-          console.log(title, "weekNumber", weekNumber);
-        }}
-        className={`size-3 border ${isActive ? "bg-red-500" : "bg-transparent"}`}></div>
+        // onMouseEnter={() => {
+        //   console.log(title, "weekNumber", weekNumber);
+        // }}
+        className={`size-3 border ${isActive ? "bg-red-500" : "bg-transparent"}`}
+      ></div>
     </Tooltip>
   );
 }

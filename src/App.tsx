@@ -1,10 +1,6 @@
 import { useState, useEffect } from "react";
 
-import Box from "@mui/material/Box";
-import FormControl from "@mui/material/FormControl";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
+import { SelectChangeEvent } from "@mui/material/Select";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
@@ -12,6 +8,8 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import dayjs, { Dayjs } from "dayjs";
 
 import Day from "@/components/Day";
+import Select from "@/components/Select";
+
 import "./App.css";
 
 const NUMBER_CASE_FOR_WEEKS = 52 * 90;
@@ -22,9 +20,15 @@ function App() {
   const [abscissa, setAbscissa] = useState<number>(52);
   // const [ordinate, setOrdinate] = useState<number>(90);
   const [date, setDate] = useState<Dayjs | null>(null);
-  const [daysAlive, setDaysAlive] = useState<number>(0);
+  // const [daysAlive, setDaysAlive] = useState<number>(0);
   const [weeksAlive, setWeeksAlive] = useState<number>(0);
   const [caseNumber, setCaseNumber] = useState<number>(NUMBER_CASE_FOR_WEEKS);
+
+  const options = [
+    { value: "years", label: "Years" },
+    { value: "months", label: "Months" },
+    { value: "weeks", label: "Weeks" },
+  ];
 
   useEffect(() => {
     if (period === "years") {
@@ -46,7 +50,7 @@ function App() {
     if (date) {
       const result = dayjs().diff(dayjs(date), "day");
       const weeksDiff = dayjs().diff(dayjs(date), "week");
-      setDaysAlive(result);
+      // setDaysAlive(result);
       setWeeksAlive(weeksDiff);
     }
 
@@ -63,22 +67,12 @@ function App() {
         <div className="flex">
           <h1>Your Life In</h1>
 
-          <Box sx={{ minWidth: 120 }}>
-            <FormControl fullWidth>
-              <Select
-                id="demo-simple-select"
-                label="Period"
-                labelId="demo-simple-select-label"
-                onChange={handleChange}
-                value={period}>
-                <MenuItem value={"years"}>Years</MenuItem>
-
-                <MenuItem value={"months"}>Months</MenuItem>
-
-                <MenuItem value={"weeks"}>Weeks</MenuItem>
-              </Select>
-            </FormControl>
-          </Box>
+          <Select
+            label="Period"
+            onChange={handleChange}
+            options={options}
+            value={period}
+          />
         </div>
 
         <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -94,17 +88,37 @@ function App() {
       </div>
 
       <div
-        className={`grid gap-1`}
-        style={{ gridTemplateColumns: `repeat(${abscissa}, minmax(0, 1fr))` }}>
+        className={`grid place-items-center gap-1`}
+        style={{
+          gridTemplateColumns: `repeat(${abscissa + 1}, minmax(0, 1fr))`,
+        }}
+      >
         {Array.from({ length: caseNumber }).map((_, index) => (
           <>
-            <Day isActive={index < weeksAlive} key={index} weekNumber={index} />
+            {index % 52 === 0 ? (
+              <>
+                <div>{index / 52}</div>
+
+                <Day
+                  isActive={index < weeksAlive}
+                  key={index}
+                  weekNumber={index}
+                />
+              </>
+            ) : (
+              <Day
+                isActive={index < weeksAlive}
+                key={index}
+                weekNumber={index}
+              />
+            )}
           </>
         ))}
       </div>
 
       <p>
-        Inspired by{" "}
+        <span>Inspired by </span>
+
         <a href="https://waitbutwhy.com/2014/05/life-weeks.html">WaitButWhy</a>
       </p>
     </div>
