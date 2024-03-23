@@ -5,11 +5,12 @@ import { v4 as uuidv4 } from "uuid";
 
 import DatePicker from "@/components/DatePicker";
 import Day from "@/components/Day";
+
 import {
   LIFE_PERIOD,
-  NUMBER_OF_CASE_FOR_WEEKS,
   NUMBER_OF_WEEKS_BY_YEAR,
-} from "@/constants";
+  NUMBER_OF_CASE_FOR_WEEKS,
+} from "@/constants/layout";
 
 import "./App.css";
 

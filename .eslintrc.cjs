@@ -18,7 +18,7 @@ module.exports = {
   rules: {
     // C
     camelcase: "warn",
-    "capitalized-comments": "warn",
+    "capitalized-comments": "off",
     // D
     "default-param-last": ["error"],
     // E
@@ -51,12 +51,12 @@ module.exports = {
             position: "before",
           },
           {
-            pattern: "api/**",
+            pattern: "@/api/**",
             group: "internal",
             position: "after",
           },
           {
-            pattern: "assets/**",
+            pattern: "@/asset/s**",
             group: "internal",
             position: "after",
           },
@@ -66,37 +66,37 @@ module.exports = {
             position: "after",
           },
           {
-            pattern: "constants/**",
+            pattern: "@/constants/**",
             group: "internal",
             position: "after",
           },
           {
-            pattern: "helpers/**",
+            pattern: "@/helpers/**",
             group: "internal",
             position: "after",
           },
           {
-            pattern: "pages/**",
+            pattern: "@/pages/**",
             group: "internal",
             position: "after",
           },
           {
-            pattern: "redux/**",
+            pattern: "@/redux/**",
             group: "internal",
             position: "after",
           },
           {
-            pattern: "routes/**",
+            pattern: "@/routes/**",
             group: "internal",
             position: "after",
           },
           {
-            pattern: "type/**",
+            pattern: "@/type/**",
             group: "internal",
             position: "after",
           },
           {
-            pattern: "utils/**",
+            pattern: "@/utils/**",
             group: "internal",
             position: "after",
           },
@@ -117,6 +117,7 @@ module.exports = {
       "error",
       { blankLine: "always", prev: "*", next: "return" },
       { blankLine: "always", prev: "*", next: "function" },
+      { blankLine: "always", prev: "*", next: "block-like" },
       { blankLine: "always", prev: ["const", "let", "var"], next: "*" },
       {
         blankLine: "any",
@@ -135,9 +136,9 @@ module.exports = {
     // R
     "require-await": "error",
     // S
-    "sort-keys": ["warn", "asc", { natural: true, minKeys: 5 }],
+    "sort-keys": ["warn", "asc"],
     "sort-vars": "error",
-
+    "sort-imports": ["off"],
     // React
     "react/jsx-newline": "warn",
     "react/jsx-no-useless-fragment": ["error", { allowExpressions: true }],
