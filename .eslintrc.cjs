@@ -1,6 +1,6 @@
 module.exports = {
   root: true,
-  env: { browser: true, es2020: true },
+  env: { browser: true, es2021: true },
   extends: [
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
@@ -14,10 +14,18 @@ module.exports = {
   ],
   ignorePatterns: ["dist", ".eslintrc.cjs"],
   parser: "@typescript-eslint/parser",
-  plugins: ["react-refresh", "prettier"],
+  plugins: ["react", "react-refresh", "prettier"],
   rules: {
+    // C
+    camelcase: "warn",
+    "capitalized-comments": "warn",
+    // D
+    "default-param-last": ["error"],
+    // E
+    eqeqeq: "error",
+    // I
     "import/order": [
-      2,
+      "error",
       {
         groups: [
           "builtin",
@@ -25,8 +33,10 @@ module.exports = {
           "internal",
           "parent",
           "sibling",
+          "object",
           "type",
           "index",
+          "unknown",
         ],
         "newlines-between": "always",
         pathGroups: [
@@ -96,15 +106,42 @@ module.exports = {
         alphabetize: {
           order:
             "asc" /* sort in ascending order. Options: ['ignore', 'asc', 'desc'] */,
+          orderImportKind: "asc",
           caseInsensitive: true /* ignore case. Options: [true, false] */,
         },
+        warnOnUnassignedImports: true,
       },
     ],
+    // P
+    "padding-line-between-statements": [
+      "error",
+      { blankLine: "always", prev: "*", next: "return" },
+      { blankLine: "always", prev: "*", next: "function" },
+      { blankLine: "always", prev: ["const", "let", "var"], next: "*" },
+      {
+        blankLine: "any",
+        prev: ["const", "let", "var"],
+        next: ["const", "let", "var"],
+      },
+    ],
+    "prefer-const": "error",
+    "prefer-object-spread": "warn",
+    // M
+    "max-params": ["warn", 3],
+    // N
+    "no-console": ["warn", { allow: ["warn", "error"] }],
+    "no-empty-function": "warn",
+    "no-param-reassign": "error",
+    // R
+    "require-await": "error",
+    // S
+    "sort-keys": ["warn", "asc", { natural: true, minKeys: 5 }],
+    "sort-vars": "error",
 
     // React
-    "react/jsx-newline": 1,
-    "react/jsx-no-useless-fragment": [2, { allowExpressions: true }],
-    "react/jsx-sort-props": [1, { ignoreCase: true }],
+    "react/jsx-newline": "warn",
+    "react/jsx-no-useless-fragment": ["error", { allowExpressions: true }],
+    "react/jsx-sort-props": ["warn", { ignoreCase: true }],
 
     "react-refresh/only-export-components": [
       "warn",
