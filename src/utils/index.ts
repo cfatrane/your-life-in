@@ -1,4 +1,4 @@
-import { LIFE_PERIOD } from "@/constants";
+import { LIFE_PERIOD } from "@/constants/layout";
 
 export function getCategoryAge(age: number) {
   const category = LIFE_PERIOD.find((c) => age > c.min && age <= c.max);
