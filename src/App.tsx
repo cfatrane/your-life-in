@@ -1,28 +1,25 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import dayjs, { Dayjs } from "dayjs";
 import { v4 as uuidv4 } from "uuid";
 
 import DatePicker from "@/components/DatePicker";
-import Day from "@/components/Day";
+import DayList from "@/components/DayList";
 
-import {
-  LIFE_PERIOD,
-  NUMBER_OF_WEEKS_BY_YEAR,
-  NUMBER_OF_CASE_FOR_WEEKS,
-} from "@/constants/layout";
+import { LIFE_PERIOD, NUMBER_OF_CASE_FOR_WEEKS } from "@/constants/layout";
 
 import "./App.css";
 
 function App() {
   const [date, setDate] = useState<Dayjs | null>(null);
   const [weeksAlive, setWeeksAlive] = useState<number>(0);
-  // const [daysAlive, setDaysAlive] = useState<number>(0);
-  const weekList = Array.from({ length: NUMBER_OF_CASE_FOR_WEEKS }, () => {
-    return {
-      id: uuidv4(),
-    };
-  });
+  const weekList = useMemo(
+    () =>
+      Array.from({ length: NUMBER_OF_CASE_FOR_WEEKS }, () => ({
+        id: uuidv4(),
+      })),
+    [NUMBER_OF_CASE_FOR_WEEKS]
+  );
 
   useEffect(() => {
     if (date) {
@@ -36,11 +33,15 @@ function App() {
 
   return (
     <div className="container">
-      <div className="flex flex-col items-center">
+      <div className="mb-12 flex flex-col items-center">
         <h1 className="text-8xl font-semibold">Your Life In Weeks</h1>
 
         <div className="flex items-center">
-          <DatePicker onAccept={(newValue) => setDate(newValue)} value={date} />
+          <DatePicker
+            label="Date de Naissance"
+            onChange={(newValue) => setDate(newValue)}
+            value={date}
+          />
         </div>
       </div>
 
@@ -63,20 +64,7 @@ function App() {
           ))}
         </div>
 
-        <div
-          className={`grid place-items-center gap-1`}
-          style={{
-            gridTemplateColumns: `repeat(${NUMBER_OF_WEEKS_BY_YEAR}, minmax(0, 1fr))`,
-          }}
-        >
-          {weekList.map((item, index) => (
-            <Day
-              isActive={index < weeksAlive}
-              key={item.id}
-              weekNumber={index + 1}
-            />
-          ))}
-        </div>
+        <DayList weekList={weekList} weeksAlive={weeksAlive} />
 
         <div className="size-60 h-full rounded-lg border-2 border-black p-4 text-left">
           COMING SOON
