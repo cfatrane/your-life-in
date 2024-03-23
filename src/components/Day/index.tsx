@@ -1,18 +1,13 @@
 /* eslint-disable sort-keys */
+import { memo } from "react";
+
 import Tooltip from "@mui/material/Tooltip";
 
-import { getCategoryAge } from "@/utils";
+import { getCategoryAge, weeksToYears } from "@/utils";
 
 type Props = { isActive: boolean; weekNumber: number };
-const weeksPerYear = 52;
 
-const weeksToYears = (weekNumber: number) => {
-  const years = weekNumber / weeksPerYear;
-
-  return years;
-};
-
-function Day({ isActive, weekNumber }: Props) {
+const Day = memo(function Day({ isActive, weekNumber }: Props) {
   let title = "";
 
   if (weekNumber <= 52) {
@@ -30,6 +25,6 @@ function Day({ isActive, weekNumber }: Props) {
       ></div>
     </Tooltip>
   );
-}
+});
 
 export default Day;
