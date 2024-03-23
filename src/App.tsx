@@ -12,8 +12,8 @@ import Select from "@/components/Select";
 
 import "./App.css";
 
-const NUMBER_CASE_FOR_WEEKS = 52 * 90;
-const NUMBER_CASE_FOR_YEARS = 9 * 10;
+const NUMBER_OF_CASE_FOR_WEEKS = 52 * 90;
+const NUMBER_OF_CASE_FOR_YEARS = 9 * 10;
 
 function App() {
   const [period, setPeriod] = useState<string>("weeks");
@@ -22,7 +22,9 @@ function App() {
   const [date, setDate] = useState<Dayjs | null>(null);
   // const [daysAlive, setDaysAlive] = useState<number>(0);
   const [weeksAlive, setWeeksAlive] = useState<number>(0);
-  const [caseNumber, setCaseNumber] = useState<number>(NUMBER_CASE_FOR_WEEKS);
+  const [caseNumber, setCaseNumber] = useState<number>(
+    NUMBER_OF_CASE_FOR_WEEKS
+  );
 
   const options = [
     { value: "years", label: "Years" },
@@ -32,7 +34,7 @@ function App() {
 
   useEffect(() => {
     if (period === "years") {
-      setCaseNumber(NUMBER_CASE_FOR_YEARS);
+      setCaseNumber(NUMBER_OF_CASE_FOR_YEARS);
       setAbscissa(9);
     }
     // else if (period === 'months') {
@@ -40,7 +42,7 @@ function App() {
     //   setOrdinate(52);
     // }
     else if (period === "weeks") {
-      setCaseNumber(NUMBER_CASE_FOR_WEEKS);
+      setCaseNumber(NUMBER_OF_CASE_FOR_WEEKS);
       setAbscissa(52);
     }
     // return () => {};
@@ -48,7 +50,7 @@ function App() {
 
   useEffect(() => {
     if (date) {
-      const result = dayjs().diff(dayjs(date), "day");
+      // const daysDiff = dayjs().diff(dayjs(date), "day");
       const weeksDiff = dayjs().diff(dayjs(date), "week");
       // setDaysAlive(result);
       setWeeksAlive(weeksDiff);
