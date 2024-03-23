@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import { SelectChangeEvent } from "@mui/material/Select";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -6,57 +6,54 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import dayjs, { Dayjs } from "dayjs";
+import "dayjs/locale/fr";
+import updateLocale from "dayjs/plugin/updateLocale";
+import { v4 as uuidv4 } from "uuid";
 
 import Day from "@/components/Day";
 import Select from "@/components/Select";
+import { LIFE_PERIOD, NUMBER_OF_CASE_FOR_WEEKS } from "@/constants";
 
 import "./App.css";
 
-const NUMBER_OF_CASE_FOR_WEEKS = 52 * 90;
-const NUMBER_OF_CASE_FOR_YEARS = 9 * 10;
+dayjs.extend(updateLocale);
+
+// Replace "en" with the name of the locale you want to update.
+dayjs.updateLocale("fr", {
+  // Sunday = 0, Monday = 1.
+  weekStart: 1,
+});
 
 function App() {
   const [period, setPeriod] = useState<string>("weeks");
-  const [abscissa, setAbscissa] = useState<number>(52);
-  // const [ordinate, setOrdinate] = useState<number>(90);
   const [date, setDate] = useState<Dayjs | null>(null);
-  // const [daysAlive, setDaysAlive] = useState<number>(0);
+  const [columns, setColumns] = useState<number>(52);
   const [weeksAlive, setWeeksAlive] = useState<number>(0);
-  const [caseNumber, setCaseNumber] = useState<number>(
-    NUMBER_OF_CASE_FOR_WEEKS
-  );
-
-  const options = [
-    { value: "years", label: "Years" },
-    { value: "months", label: "Months" },
-    { value: "weeks", label: "Weeks" },
-  ];
+  const [daysAlive, setDaysAlive] = useState<number>(0);
+  const [list, setList] = useState<{ date: any; id: string }[]>([]);
 
   useEffect(() => {
-    if (period === "years") {
-      setCaseNumber(NUMBER_OF_CASE_FOR_YEARS);
-      setAbscissa(9);
-    }
-    // else if (period === 'months') {
-    //   setAbscissa(90);
-    //   setOrdinate(52);
-    // }
-    else if (period === "weeks") {
-      setCaseNumber(NUMBER_OF_CASE_FOR_WEEKS);
-      setAbscissa(52);
-    }
-    // return () => {};
-  }, [period]);
+    const arrayOfObjects = Array.from(
+      { length: NUMBER_OF_CASE_FOR_WEEKS },
+      () => {
+        return {
+          date: null,
+          id: uuidv4(),
+        };
+      }
+    );
+
+    setList(arrayOfObjects);
+  }, []);
 
   useEffect(() => {
     if (date) {
-      // const daysDiff = dayjs().diff(dayjs(date), "day");
+      const daysDiff = dayjs().diff(dayjs(date), "day");
       const weeksDiff = dayjs().diff(dayjs(date), "week");
-      // setDaysAlive(result);
+
+      setDaysAlive(daysDiff);
       setWeeksAlive(weeksDiff);
     }
-
-    // return () => {};
   }, [date]);
 
   const handleChange = (event: SelectChangeEvent) => {
@@ -64,58 +61,68 @@ function App() {
   };
 
   return (
-    <div>
+    <div className="container">
       <div className="flex flex-col items-center">
-        <div className="flex">
-          <h1>Your Life In</h1>
+        <h1 className="text-8xl font-semibold">Your Life In</h1>
 
+        <div className="flex items-center">
           <Select
             label="Period"
             onChange={handleChange}
-            options={options}
+            options={[
+              { value: "years", label: "Years" },
+              { value: "months", label: "Months" },
+              { value: "weeks", label: "Weeks" },
+            ]}
             value={period}
           />
-        </div>
 
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <DemoContainer components={["DatePicker"]}>
-            <DatePicker
-              format="DD/MM/YYYY"
-              onAccept={(newValue) => setDate(newValue)}
-              // onChange={(newValue) => setDate(newValue)}
-              value={date}
-            />
-          </DemoContainer>
-        </LocalizationProvider>
+          <LocalizationProvider adapterLocale="fr" dateAdapter={AdapterDayjs}>
+            <DemoContainer components={["DatePicker"]}>
+              <DatePicker
+                onAccept={(newValue) => setDate(newValue)}
+                value={date}
+              />
+            </DemoContainer>
+          </LocalizationProvider>
+        </div>
       </div>
 
-      <div
-        className={`grid place-items-center gap-1`}
-        style={{
-          gridTemplateColumns: `repeat(${abscissa + 1}, minmax(0, 1fr))`,
-        }}
-      >
-        {Array.from({ length: caseNumber }).map((_, index) => (
-          <>
-            {index % 52 === 0 ? (
-              <>
-                <div>{index / 52}</div>
+      <div className="flex justify-between">
+        <div className="size-60 h-full rounded-lg border-2 border-black p-4 text-left">
+          <h5 className="mb-4 text-xl">Période</h5>
 
-                <Day
-                  isActive={index < weeksAlive}
-                  key={index}
-                  weekNumber={index}
-                />
-              </>
-            ) : (
-              <Day
-                isActive={index < weeksAlive}
-                key={index}
-                weekNumber={index}
-              />
-            )}
-          </>
-        ))}
+          {LIFE_PERIOD.map((item) => (
+            <div className="mb-1 flex items-center" key={item.label}>
+              <p className="mr-2">
+                <span className="font-semibold">{item.label}: </span>
+
+                <span>
+                  {item.min} - {item.max}
+                </span>
+              </p>
+
+              <div className={`size-3 rounded-sm ${item.color}`} />
+            </div>
+          ))}
+        </div>
+
+        <div
+          className={`grid place-items-center gap-1`}
+          style={{
+            gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))`,
+          }}
+        >
+          {list.map((item, index) => (
+            <Day
+              isActive={index < weeksAlive}
+              key={item.id}
+              weekNumber={index + 1}
+            />
+          ))}
+        </div>
+
+        <div className="size-60 h-full rounded-lg border-2 border-black p-4 text-left"></div>
       </div>
 
       <p>
