@@ -20,11 +20,10 @@ function Day({ isActive, weekNumber }: Props) {
   return (
     <Tooltip title={title}>
       <div
-        // onMouseEnter={() => {
-        //   console.log(title, "weekNumber", weekNumber);
-        // }}
-        className={`size-3 border ${isActive ? "bg-red-500" : "bg-transparent"}`}
-      ></div>
+        className={`size-10 border ${isActive ? "bg-red-500" : "bg-transparent text-xs"}`}
+      >
+        {weekNumber}
+      </div>
     </Tooltip>
   );
 }
