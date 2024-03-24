@@ -1,5 +1,3 @@
-import React from "react";
-
 import Day from "@/components/Day";
 
 import { NUMBER_OF_WEEKS_BY_YEAR } from "@/constants/layout";

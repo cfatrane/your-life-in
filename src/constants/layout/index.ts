@@ -1,4 +1,3 @@
-/* eslint-disable sort-keys */
 const LIFE_PERIOD = [
   {
     color: "bg-blue-500",
