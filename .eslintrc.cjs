@@ -148,6 +148,9 @@ module.exports = {
       "warn",
       { allowConstantExport: true },
     ],
+
+    // TODO: Update this
+    "@typescript-eslint/no-explicit-any": "warn",
   },
   settings: {
     "import/resolver": {
