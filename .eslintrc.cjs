@@ -112,6 +112,12 @@ module.exports = {
         warnOnUnassignedImports: true,
       },
     ],
+    // M
+    "max-params": ["warn", 3],
+    // N
+    "no-console": ["warn", { allow: ["warn", "error"] }],
+    "no-empty-function": "warn",
+    "no-param-reassign": "error",
     // P
     "padding-line-between-statements": [
       "error",
@@ -134,12 +140,6 @@ module.exports = {
     ],
     "prefer-const": "error",
     "prefer-object-spread": "warn",
-    // M
-    "max-params": ["warn", 3],
-    // N
-    "no-console": ["warn", { allow: ["warn", "error"] }],
-    "no-empty-function": "warn",
-    "no-param-reassign": "error",
     // R
     "require-await": "error",
     // S
