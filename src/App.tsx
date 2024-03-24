@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 
+import { inject } from "@vercel/analytics";
 import dayjs, { Dayjs } from "dayjs";
 import { v4 as uuidv4 } from "uuid";
 
@@ -30,6 +31,8 @@ function App() {
       setWeeksAlive(weeksDiff);
     }
   }, [date]);
+
+  inject();
 
   return (
     <div className="container">
