@@ -15,12 +15,7 @@ const Day = memo(function Day({ isActive, weekNumber }: Props) {
     title = `${Math.trunc(weekNumber / 52)} years and ${weekNumber % 52} weeks, week ${weekNumber}`;
   }
 
-  const category: {
-    color: string;
-    label: string;
-    max: number;
-    min: number;
-  } = getCategoryAge(weeksToYears(weekNumber));
+  const category = getCategoryAge(weeksToYears(weekNumber));
 
   return (
     <Tooltip title={title}>

@@ -1,3 +1,5 @@
+import { Category } from "@/types/layout";
+
 const LIFE_PERIOD = [
   {
     color: "bg-blue-500",
@@ -49,7 +51,7 @@ const LIFE_PERIOD = [
     max: 90,
     min: 64,
   },
-];
+] as Category[];
 const NUMBER_OF_CASE_FOR_WEEKS = 52 * 90;
 const NUMBER_OF_CASE_FOR_YEARS = 9 * 10;
 const NUMBER_OF_WEEKS_BY_YEAR = 52;

@@ -59,7 +59,9 @@ function App() {
                 </span>
               </p>
 
-              <div className={`size-3 rounded-sm ${item.color}`} />
+              <div
+                className={`size-3 rounded-sm border border-black ${item.color}`}
+              />
             </div>
           ))}
         </div>
