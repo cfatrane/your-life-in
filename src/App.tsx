@@ -24,10 +24,8 @@ function App() {
 
   useEffect(() => {
     if (date) {
-      // const daysDiff = dayjs().diff(dayjs(date), "day");
       const weeksDiff = dayjs().diff(dayjs(date), "week");
 
-      // setDaysAlive(daysDiff);
       setWeeksAlive(weeksDiff);
     }
   }, [date]);
