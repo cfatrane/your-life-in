@@ -48,7 +48,7 @@ function App() {
         </div>
       </div>
 
-      <div className="flex justify-between">
+      <div className="flex justify-between gap-x-8">
         <div className="size-60 h-full rounded-lg border-2 border-black p-4 text-left">
           <h5 className="mb-4 text-xl">Période</h5>
 

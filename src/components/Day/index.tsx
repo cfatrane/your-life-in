@@ -20,7 +20,7 @@ const Day = memo(function Day({ isActive, weekNumber }: Props) {
   return (
     <Tooltip title={title}>
       <div
-        className={`size-3 rounded-sm border border-black ${isActive ? category.color : `${category.color} opacity-50`}`}
+        className={`size-4 rounded-sm border border-black ${isActive ? category.color : `${category.color} opacity-50`}`}
       ></div>
     </Tooltip>
   );
