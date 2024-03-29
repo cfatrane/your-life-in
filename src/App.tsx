@@ -23,7 +23,9 @@ function App() {
   );
 
   useEffect(() => {
-    if (date) {
+    const year = dayjs(date).year();
+
+    if (date && year.toString().length === 4) {
       const weeksDiff = dayjs().diff(dayjs(date), "week");
 
       setWeeksAlive(weeksDiff);

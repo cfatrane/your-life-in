@@ -7,8 +7,10 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "lint:fix": "eslint ./src --fix",
     "preview": "vite preview",
-    "format": "prettier --write .",
+    "format": "prettier --check --ignore-path .gitignore .",
+    "format:fix": "prettier --write --ignore-path .gitignore .",
     "prepare": "husky install"
   },
   "dependencies": {
