@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useMemo, useState } from "react";
 
 import { inject } from "@vercel/analytics";
@@ -9,9 +11,7 @@ import DayList from "@/components/DayList";
 
 import { LIFE_PERIOD, NUMBER_OF_CASE_FOR_WEEKS } from "@/constants/layout";
 
-import "./App.css";
-
-function App() {
+export default function Home() {
   const [date, setDate] = useState<Dayjs | null>(null);
   const [weeksAlive, setWeeksAlive] = useState<number>(0);
   const weekList = useMemo(
@@ -19,7 +19,7 @@ function App() {
       Array.from({ length: NUMBER_OF_CASE_FOR_WEEKS }, () => ({
         id: uuidv4(),
       })),
-    [NUMBER_OF_CASE_FOR_WEEKS]
+    [NUMBER_OF_CASE_FOR_WEEKS],
   );
 
   useEffect(() => {
@@ -35,7 +35,7 @@ function App() {
   inject();
 
   return (
-    <div className="container">
+    <div className="">
       <div className="mb-12 flex flex-col items-center">
         <h1 className="text-8xl font-semibold">Your Life In Weeks</h1>
 
@@ -84,5 +84,3 @@ function App() {
     </div>
   );
 }
-
-export default App;
