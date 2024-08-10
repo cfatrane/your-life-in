@@ -1,8 +1,7 @@
 import { memo } from "react";
 
-import Tooltip from "@mui/material/Tooltip";
-
 import { getCategoryAge, weeksToYears } from "@/utils";
+import Tooltip from "@mui/material/Tooltip";
 
 type Props = { isActive: boolean; weekNumber: number };
 
