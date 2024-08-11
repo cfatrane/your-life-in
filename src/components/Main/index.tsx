@@ -17,34 +17,12 @@ import { DayType } from "@/types/layout";
 function Main() {
   const [birthDate, setBirthDate] = useState<string | null>(null);
 
-  useEffect(() => {
-    const year = dayjs(birthDate).year();
-
-    console.log("year", year, dayjs(birthDate), year.toString());
-
-    if (birthDate && year.toString().length === 4) {
-      const weeksDiff = dayjs().diff(dayjs(birthDate), "week");
-
-      console.log("weeksDiff", weeksDiff);
-
-      // setWeeksAlive(weeksDiff);
-    }
-  }, [birthDate]);
-
   const calculateWeeksAlive = (birthDate: string | null) => {
     if (birthDate) {
       const weeksDiff = dayjs().diff(dayjs(birthDate), "week");
 
-      console.log("weeksDiff", weeksDiff);
-
       return weeksDiff;
     }
-    // if (!birthDate) return 0;
-    // const birth = new Date(birthDate);
-    // const today = new Date();
-    // const differenceInTime = today.getTime() - birth.getTime();
-
-    // return Math.floor(differenceInTime / (1000 * 3600 * 24 * 7));
   };
 
   const weeksAlive = useMemo(() => calculateWeeksAlive(birthDate), [birthDate]);
