@@ -7,6 +7,7 @@ import dayjs, { Dayjs } from "dayjs";
 // import { v4 as uuidv4 } from "uuid";
 // import DatePicker from "@/components/DatePicker";
 import DayList from "@/components/DayList";
+import { Input } from "@/components/ui/input";
 import WeekList from "@/components/WeekList";
 
 import { LIFE_PERIOD, NUMBER_OF_CASE_FOR_WEEKS } from "@/constants/layout";
@@ -14,29 +15,53 @@ import { LIFE_PERIOD, NUMBER_OF_CASE_FOR_WEEKS } from "@/constants/layout";
 import { DayType } from "@/types/layout";
 
 function Main() {
-  const [date, setDate] = useState<Dayjs | null>(null);
-  const [weeksAlive, setWeeksAlive] = useState<number>(0);
+  const [birthDate, setBirthDate] = useState<string | null>(null);
+
+  useEffect(() => {
+    const year = dayjs(birthDate).year();
+
+    console.log("year", year, dayjs(birthDate), year.toString());
+
+    if (birthDate && year.toString().length === 4) {
+      const weeksDiff = dayjs().diff(dayjs(birthDate), "week");
+
+      console.log("weeksDiff", weeksDiff);
+
+      // setWeeksAlive(weeksDiff);
+    }
+  }, [birthDate]);
+
+  const calculateWeeksAlive = (birthDate: string | null) => {
+    if (birthDate) {
+      const weeksDiff = dayjs().diff(dayjs(birthDate), "week");
+
+      console.log("weeksDiff", weeksDiff);
+
+      return weeksDiff;
+    }
+    // if (!birthDate) return 0;
+    // const birth = new Date(birthDate);
+    // const today = new Date();
+    // const differenceInTime = today.getTime() - birth.getTime();
+
+    // return Math.floor(differenceInTime / (1000 * 3600 * 24 * 7));
+  };
+
+  const weeksAlive = useMemo(() => calculateWeeksAlive(birthDate), [birthDate]);
   const weekList: DayType[] = Array.from(
     { length: NUMBER_OF_CASE_FOR_WEEKS },
     (item, index) => ({
       id: index,
-      isActive: false,
+      isActive: index < (weeksAlive ?? 0),
     }),
   );
-  // useEffect(() => {
-  //   const year = dayjs(date).year();
-
-  //   if (date && year.toString().length === 4) {
-  //     const weeksDiff = dayjs().diff(dayjs(date), "week");
-
-  //     setWeeksAlive(weeksDiff);
-  //   }
-  // }, [date]);
 
   return (
     <div>
-      <div className="mb-12 flex flex-col items-center">
-        <h1 className="text-8xl font-semibold">Your Life In Weeks</h1>
+      <div className="mb-12 flex flex-col items-center gap-4">
+        <h1 className="text-center text-8xl font-semibold">
+          Your Life In Weeks
+        </h1>
 
         {/* <div className="flex items-center">
           <DatePicker
@@ -45,10 +70,15 @@ function Main() {
             value={date}
           />
         </div> */}
+        <Input
+          className="w-36"
+          onChange={(event) => setBirthDate(event.target.value)}
+          type="date"
+        />
       </div>
 
-      <div className="flex justify-between gap-x-8">
-        <div className="size-60 h-full shrink-0 rounded-lg border-2 border-black p-4">
+      <div className="flex justify-between">
+        <div className="hidden size-60 h-full shrink-0 rounded-lg border-2 border-black p-4 lg:block">
           <h5 className="mb-4 text-xl">Période</h5>
 
           {LIFE_PERIOD.map((item) => (
@@ -68,18 +98,18 @@ function Main() {
           ))}
         </div>
 
-        <div className="flex gap-2">
+        <div className="mx-auto flex gap-2">
           <WeekList />
 
-          <DayList weekList={weekList} weeksAlive={weeksAlive} />
+          <DayList weekList={weekList} />
         </div>
 
-        <div className="size-60 h-full shrink-0 rounded-lg border-2 border-black p-4">
+        <div className="hidden size-60 h-full shrink-0 rounded-lg border-2 border-black p-4 lg:block">
           COMING SOON
         </div>
       </div>
 
-      <p>
+      <p className="mt-12 flex items-center justify-center">
         <span>Inspired by </span>
 
         <a href="https://waitbutwhy.com/2014/05/life-weeks.html">WaitButWhy</a>

@@ -6,9 +6,11 @@ import { NUMBER_OF_WEEKS_BY_YEAR } from "@/constants/layout";
 
 import { DayType } from "@/types/layout";
 
-type Props = { weekList: DayType[]; weeksAlive: number };
+type Props = { weekList: DayType[] };
 
-function DayList({ weekList, weeksAlive }: Props) {
+function DayList({ weekList }: Props) {
+  console.log("weekList", weekList);
+
   return (
     <div
       className={`grid shrink-0 place-items-center gap-1`}
