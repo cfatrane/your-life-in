@@ -4,6 +4,8 @@ import { Inter } from "next/font/google";
 
 import { Analytics } from "@vercel/analytics/react";
 
+import { TooltipProvider } from "@/components/ui/tooltip";
+
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -21,7 +23,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`mx-auto sm:px-6 lg:px-8 ${inter.className}`}>
-        {children}
+        <TooltipProvider delayDuration={300}>{children}</TooltipProvider>
 
         <Analytics />
       </body>
