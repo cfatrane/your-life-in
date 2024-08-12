@@ -22,8 +22,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`mx-auto sm:px-6 lg:px-8 ${inter.className}`}>
-        <TooltipProvider delayDuration={300}>{children}</TooltipProvider>
+      <body className={`${inter.className}`}>
+        <TooltipProvider delayDuration={300}>
+          <main>{children}</main>
+        </TooltipProvider>
 
         <Analytics />
       </body>
