@@ -6,6 +6,7 @@ import Link from "next/link";
 
 import dayjs, { Dayjs } from "dayjs";
 
+import Period from "@/components/Period";
 import { Input } from "@/components/ui/input";
 
 import { LIFE_PERIOD, NUMBER_OF_CASE_FOR_WEEKS } from "@/constants/layout";
@@ -48,32 +49,16 @@ function Main() {
         />
       </div>
 
-      <div className="flex justify-between">
-        <div className="hidden size-60 h-full shrink-0 rounded-lg border-2 border-black p-4 lg:block">
-          <h5 className="mb-4 text-xl">Période</h5>
-
-          {LIFE_PERIOD.map((item) => (
-            <div className="mb-1 flex items-center" key={item.label}>
-              <p className="mr-2">
-                <span className="font-semibold">{item.label}: </span>
-
-                <span>
-                  {item.min} - {item.max}
-                </span>
-              </p>
-
-              <div
-                className={`size-3 rounded-sm border border-black ${item.color}`}
-              />
-            </div>
-          ))}
+      <div className="flex justify-around">
+        <div className="hidden w-1/6 xl:block">
+          <Period />
         </div>
 
-        <Calendar weekList={weekList} />
-
-        <div className="hidden size-60 h-full shrink-0 rounded-lg border-2 border-black p-4 lg:block">
-          COMING SOON
+        <div className="mx-auto xl:mx-0">
+          <Calendar weekList={weekList} />
         </div>
+
+        <div className="hidden w-1/6 bg-red-800 xl:block" />
       </div>
 
       <p className="my-12 flex justify-center">

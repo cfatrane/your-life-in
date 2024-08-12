@@ -9,7 +9,7 @@ type Props = { weekList: DayType[] };
 function Calendar({ weekList }: Props) {
   return (
     <div
-      className="mx-auto grid"
+      className="grid"
       style={{
         gridTemplateColumns: "min-content 1fr",
         gridTemplateRows: "min-content 1fr",
