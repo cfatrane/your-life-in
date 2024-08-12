@@ -10,9 +10,11 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 
+import { cn } from "@/lib/utils";
+
 type Props = { isActive: boolean; weekNumber: number };
 
-const Day = memo(function Day({ isActive, weekNumber }: Props) {
+const Week = memo(function Day({ isActive, weekNumber }: Props) {
   let title = "";
 
   if (weekNumber <= 52) {
@@ -38,4 +40,4 @@ const Day = memo(function Day({ isActive, weekNumber }: Props) {
   );
 });
 
-export default Day;
+export default Week;

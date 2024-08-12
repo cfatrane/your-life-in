@@ -1,6 +1,6 @@
 import { NUMBER_OF_YEARS_BY_LIFE } from "@/constants/layout";
 
-function YearList() {
+function YearNumberList() {
   return (
     <div className="relative">
       <p className="absolute top-0 origin-top-left rotate-90">Years</p>
@@ -25,4 +25,4 @@ function YearList() {
     </div>
   );
 }
-export default YearList;
+export default YearNumberList;

@@ -1,8 +1,8 @@
 import { DayType } from "@/types/layout";
 
-import DayList from "../DayList";
 import WeekList from "../WeekList";
-import YearList from "../YearList";
+import WeekNumberList from "../WeekNumberList";
+import YearNumberList from "../YearNumberList";
 
 type Props = { weekList: DayType[] };
 
@@ -18,14 +18,14 @@ function Calendar({ weekList }: Props) {
       <div />
 
       <div className="mb-2">
-        <WeekList />
+        <WeekNumberList />
       </div>
 
       <div className="mr-2">
-        <YearList />
+        <YearNumberList />
       </div>
 
-      <DayList weekList={weekList} />
+      <WeekList weekList={weekList} />
     </div>
   );
 }

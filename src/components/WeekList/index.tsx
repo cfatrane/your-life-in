@@ -1,30 +1,24 @@
+import Week from "@/components/Week";
+
 import { NUMBER_OF_WEEKS_BY_YEAR } from "@/constants/layout";
 
-function WeekList() {
-  return (
-    <div className="grid shrink">
-      <p>Weeks</p>
+import { DayType } from "@/types/layout";
 
-      <div
-        className="grid gap-1"
-        style={{
-          gridTemplateColumns: `repeat(${NUMBER_OF_WEEKS_BY_YEAR}, minmax(0, 1fr))`,
-        }}
-      >
-        {Array.from({ length: NUMBER_OF_WEEKS_BY_YEAR }, (item, index) => ({
-          id: index,
-        })).map((_, index) => (
-          <div
-            className="flex size-3 shrink-0 items-center justify-center"
-            key={index}
-          >
-            {index % 3 === 0 && (
-              <p className="text-center text-xs">{index + 1}</p>
-            )}
-          </div>
-        ))}
-      </div>
+type Props = { weekList: DayType[] };
+
+function WeekList({ weekList }: Props) {
+  return (
+    <div
+      className={`grid shrink-0 place-items-center gap-1`}
+      style={{
+        gridTemplateColumns: `repeat(${NUMBER_OF_WEEKS_BY_YEAR}, minmax(0, 1fr))`,
+      }}
+    >
+      {weekList.map((item, index) => (
+        <Week isActive={item.isActive} key={item.id} weekNumber={index + 1} />
+      ))}
     </div>
   );
 }
+
 export default WeekList;
