@@ -1,18 +1,18 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
+
+import Link from "next/link";
 
 import dayjs, { Dayjs } from "dayjs";
 
-// import { v4 as uuidv4 } from "uuid";
-// import DatePicker from "@/components/DatePicker";
-import DayList from "@/components/DayList";
 import { Input } from "@/components/ui/input";
-import WeekList from "@/components/WeekList";
 
 import { LIFE_PERIOD, NUMBER_OF_CASE_FOR_WEEKS } from "@/constants/layout";
 
 import { DayType } from "@/types/layout";
+
+import Calendar from "../Calendar";
 
 function Main() {
   const [birthDate, setBirthDate] = useState<string | null>(null);
@@ -37,17 +37,10 @@ function Main() {
   return (
     <div>
       <div className="mb-12 flex flex-col items-center gap-4">
-        <h1 className="text-center text-8xl font-semibold">
+        <h1 className="text-center text-6xl font-semibold">
           Your Life In Weeks
         </h1>
 
-        {/* <div className="flex items-center">
-          <DatePicker
-            label="Date de Naissance"
-            onChange={(newValue) => setDate(newValue)}
-            value={date}
-          />
-        </div> */}
         <Input
           className="w-36"
           onChange={(event) => setBirthDate(event.target.value)}
@@ -76,21 +69,19 @@ function Main() {
           ))}
         </div>
 
-        <div className="mx-auto flex gap-2">
-          <WeekList />
-
-          <DayList weekList={weekList} />
-        </div>
+        <Calendar weekList={weekList} />
 
         <div className="hidden size-60 h-full shrink-0 rounded-lg border-2 border-black p-4 lg:block">
           COMING SOON
         </div>
       </div>
 
-      <p className="mt-12 flex items-center justify-center">
+      <p className="my-12 flex justify-center">
         <span>Inspired by </span>
 
-        <a href="https://waitbutwhy.com/2014/05/life-weeks.html">WaitButWhy</a>
+        <Link href="https://waitbutwhy.com/2014/05/life-weeks.html">
+          WaitButWhy
+        </Link>
       </p>
     </div>
   );
