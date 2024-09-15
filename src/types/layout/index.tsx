@@ -4,3 +4,8 @@ export type Category = {
   max: number;
   min: number;
 };
+
+export type DayType = {
+  id: number;
+  isActive: boolean;
+};
