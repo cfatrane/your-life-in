@@ -2,8 +2,6 @@
 
 import { useMemo, useState } from "react";
 
-import Link from "next/link";
-
 import dayjs from "dayjs";
 
 import Calendar from "@/components/Calendar";
@@ -34,7 +32,7 @@ function Main() {
   );
 
   return (
-    <div>
+    <>
       <div className="mb-12 flex flex-col items-center gap-4">
         <Input
           className="h-12 w-fit"
@@ -48,15 +46,7 @@ function Main() {
           <Calendar weekList={weekList} />
         </div>
       </div>
-
-      <p className="my-12 flex justify-center">
-        <span>Inspired by </span>
-
-        <Link href="https://waitbutwhy.com/2014/05/life-weeks.html">
-          WaitButWhy
-        </Link>
-      </p>
-    </div>
+    </>
   );
 }
 export default Main;
