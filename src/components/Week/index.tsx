@@ -29,7 +29,10 @@ const Week = memo(function Day({ isActive, weekNumber }: Props) {
     <Tooltip>
       <TooltipTrigger>
         <div
-          className={`size-3 shrink-0 border border-black ${isActive ? category.color : `${category.color} opacity-50`}`}
+          className={cn(
+            "size-3 shrink-0 border border-black",
+            isActive ? category.color : `${category.color} opacity-50`,
+          )}
         />
       </TooltipTrigger>
 
