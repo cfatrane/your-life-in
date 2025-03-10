@@ -41,7 +41,7 @@
     "@types/node": "^22",
     "@types/react": "19.0.10",
     "@types/react-dom": "19.0.4",
-    "@types/uuid": "^9.0.8",
+    "@types/uuid": "^10.0.0",
     "conventional-changelog-atom": "^5.0.0",
     "eslint": "^9.21.0",
     "eslint-config-next": "15.2.1",
