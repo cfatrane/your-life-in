@@ -1,6 +1,6 @@
-import { NUMBER_OF_WEEKS_BY_YEAR } from "@/constants/layout";
+import { NUMBER_OF_WEEKS_BY_YEAR } from "@/features/life-calendar/constants";
 
-function WeekNumberList() {
+export function WeekNumberList() {
   return (
     <div className="grid shrink">
       <p>Weeks</p>
@@ -11,7 +11,7 @@ function WeekNumberList() {
           gridTemplateColumns: `repeat(${NUMBER_OF_WEEKS_BY_YEAR}, minmax(0, 1fr))`,
         }}
       >
-        {Array.from({ length: NUMBER_OF_WEEKS_BY_YEAR }, (item, index) => ({
+        {Array.from({ length: NUMBER_OF_WEEKS_BY_YEAR }, (_, index) => ({
           id: index,
         })).map((_, index) => (
           <div
@@ -27,4 +27,3 @@ function WeekNumberList() {
     </div>
   );
 }
-export default WeekNumberList;

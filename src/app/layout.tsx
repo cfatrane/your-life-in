@@ -4,16 +4,18 @@ import { Inter } from "next/font/google";
 
 import { Analytics } from "@vercel/analytics/react";
 
-import Footer from "@/components/Footer";
-import { TooltipProvider } from "@/components/ui/tooltip";
+import { Footer } from "@/components/layout/footer";
+
+import { APP_CONFIG } from "@/config/app-config";
 
 import "./globals.css";
+import { Providers } from "./providers";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Your Life In Weeks",
-  description: "Your Life In Weeks",
+  description: APP_CONFIG.description,
+  title: APP_CONFIG.title,
 };
 
 export default function RootLayout({
@@ -23,12 +25,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.className}`}>
-        <TooltipProvider delayDuration={300}>
+      <body className={inter.className}>
+        <Providers>
           <main>{children}</main>
 
           <Footer />
-        </TooltipProvider>
+        </Providers>
 
         <Analytics />
       </body>

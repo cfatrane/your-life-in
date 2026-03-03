@@ -1,12 +1,14 @@
-import { DayType } from "@/types/layout";
+import { WeekCell } from "@/features/life-calendar/types";
 
-import WeekList from "../WeekList";
-import WeekNumberList from "../WeekNumberList";
-import YearNumberList from "../YearNumberList";
+import { WeekList } from "./week-list";
+import { WeekNumberList } from "./week-number-list";
+import { YearNumberList } from "./year-number-list";
 
-type Props = { weekList: DayType[] };
+type CalendarProps = {
+  weekList: WeekCell[];
+};
 
-function Calendar({ weekList }: Props) {
+export function Calendar({ weekList }: CalendarProps) {
   return (
     <div
       className="grid"
@@ -29,4 +31,3 @@ function Calendar({ weekList }: Props) {
     </div>
   );
 }
-export default Calendar;

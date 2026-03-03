@@ -1,4 +1,4 @@
-import Main from "@/components/Main";
+import { LifeCalendar } from "@/features/life-calendar/components/life-calendar";
 
 export default function Home() {
   return (
@@ -19,7 +19,7 @@ export default function Home() {
 
           <div className="mt-16 flow-root sm:mt-24">
             <div className="-m-2 p-2 lg:-m-4 lg:rounded-2xl lg:p-4">
-              <Main />
+              <LifeCalendar />
             </div>
           </div>
         </div>
