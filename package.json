@@ -67,10 +67,6 @@
   "overrides": {
     "@types/react": "19.2.14",
     "@types/react-dom": "19.2.3"
-<<<<<<< HEAD
   },
   "packageManager": "bun@1.3.4"
-=======
-  }
->>>>>>> f9e4613 (chore: update dependencies and improve tsconfig formatting)
 }
