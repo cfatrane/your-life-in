@@ -1,6 +1,6 @@
-import { Category } from "@/types/layout";
+import { Category } from "@/features/life-calendar/types";
 
-const LIFE_PERIOD = [
+const LIFE_PERIOD: Category[] = [
   {
     color: "bg-blue-500",
     label: "Nourrisson",
@@ -51,7 +51,7 @@ const LIFE_PERIOD = [
     max: 90,
     min: 64,
   },
-] as Category[];
+];
 
 const NUMBER_OF_CASE_FOR_YEARS = 9 * 10;
 const NUMBER_OF_WEEKS_BY_MONTHS = 4;

@@ -1,6 +1,4 @@
-import Link from "next/link";
-
-export default function Footer() {
+export function Footer() {
   return (
     <footer className="my-12">
       <p className="flex justify-center">

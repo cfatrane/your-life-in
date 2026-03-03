@@ -2,7 +2,8 @@
 
 import { memo } from "react";
 
-import { getCategoryAge, weeksToYears } from "@/utils";
+import { getCategoryAge } from "@/features/life-calendar/lib/get-category-age";
+import { weeksToYears } from "@/features/life-calendar/lib/weeks-to-years";
 
 import {
   Tooltip,
@@ -10,16 +11,19 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/cn";
 
-type Props = { isActive: boolean; weekNumber: number };
+type WeekProps = {
+  isActive: boolean;
+  weekNumber: number;
+};
 
-const Week = memo(function Day({ isActive, weekNumber }: Props) {
+export const Week = memo(function Week({ isActive, weekNumber }: WeekProps) {
   let title = "";
 
   if (weekNumber <= 52) {
     title = `${weekNumber} weeks`;
-  } else if (weekNumber > 52) {
+  } else {
     title = `${Math.trunc(weekNumber / 52)} years and ${weekNumber % 52} weeks, week ${weekNumber}`;
   }
 
@@ -42,5 +46,3 @@ const Week = memo(function Day({ isActive, weekNumber }: Props) {
     </Tooltip>
   );
 });
-
-export default Week;

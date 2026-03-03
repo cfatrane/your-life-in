@@ -3,9 +3,10 @@ export type Category = {
   label: string;
   max: number;
   min: number;
+  parent?: string;
 };
 
-export type DayType = {
+export type WeekCell = {
   id: number;
   isActive: boolean;
 };

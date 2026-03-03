@@ -1,6 +1,6 @@
-import { LIFE_PERIOD, NUMBER_OF_CASE_FOR_WEEKS } from "@/constants/layout";
+import { LIFE_PERIOD } from "@/features/life-calendar/constants";
 
-function Period() {
+export function Period() {
   return (
     <div className="rounded-lg border-2 border-black p-4">
       <h5 className="mb-4 text-xl">Période</h5>
@@ -23,4 +23,3 @@ function Period() {
     </div>
   );
 }
-export default Period;

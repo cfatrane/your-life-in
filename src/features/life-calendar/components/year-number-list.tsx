@@ -1,6 +1,6 @@
-import { NUMBER_OF_YEARS_BY_LIFE } from "@/constants/layout";
+import { NUMBER_OF_YEARS_BY_LIFE } from "@/features/life-calendar/constants";
 
-function YearNumberList() {
+export function YearNumberList() {
   return (
     <div className="relative">
       <p className="absolute top-0 origin-top-left rotate-90">Years</p>
@@ -11,7 +11,7 @@ function YearNumberList() {
           gridTemplateRows: `repeat(${NUMBER_OF_YEARS_BY_LIFE}, minmax(0, 1fr))`,
         }}
       >
-        {Array.from({ length: NUMBER_OF_YEARS_BY_LIFE }, (item, index) => ({
+        {Array.from({ length: NUMBER_OF_YEARS_BY_LIFE }, (_, index) => ({
           id: index,
         })).map((_, index) => (
           <div
@@ -25,4 +25,3 @@ function YearNumberList() {
     </div>
   );
 }
-export default YearNumberList;
