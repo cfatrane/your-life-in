@@ -11,7 +11,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 
-import { cn } from "@/lib/cn";
+import { cn } from "@/lib/utils";
 
 type WeekProps = {
   isActive: boolean;
