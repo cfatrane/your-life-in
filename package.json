@@ -27,7 +27,7 @@
     "react-dom": "19.2.4",
     "tailwind-merge": "^2.6.1",
     "tailwindcss-animate": "^1.0.7",
-    "uuid": "^9.0.1"
+    "uuid": "^13.0.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.8.1",
