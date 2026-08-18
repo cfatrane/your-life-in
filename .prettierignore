@@ -1,3 +1,6 @@
 # Ignore artifacts:
 build
 coverage
+
+# Preserve vendored agent skills:
+.agents/skills
