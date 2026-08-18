@@ -14,7 +14,7 @@ const compat = new FlatCompat({
 
 export default [
   {
-    ignores: ["**/components/ui/**/*"],
+    ignores: ["**/.agents/skills/**/*", "**/components/ui/**/*"],
   },
   ...fixupConfigRules(
     compat.extends(
