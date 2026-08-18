@@ -19,6 +19,11 @@ updates:
         applies-to: "version-updates"
         patterns:
           - "*"
+        exclude-patterns:
+          # Bun updates these alongside React; processing them again produces
+          # Dependabot::Bun::FileUpdater::NoChangeError.
+          - "@types/react"
+          - "@types/react-dom"
         update-types:
           - "minor"
           - "patch"
