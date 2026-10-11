@@ -13,3 +13,16 @@ Based on [Your Life In Weeks](https://waitbutwhy.com/2014/05/life-weeks.html) by
 > Sometimes life seems really short, and other times it seems impossibly long. But this chart helps to emphasize that it’s most certainly finite. Those are your weeks and they’re all you’ve got.
 
 ![alt text](<Your Life In Weeks.jpeg>)
+
+## Tests
+
+```sh
+bun install
+bunx playwright install chromium
+bun run test
+bun run typecheck
+```
+
+Les tests navigateur lancent le serveur local sur le port 3075. Ils vérifient
+la saisie, la restauration et l’effacement de la date, ainsi que les erreurs
+de stockage, avec une date courante contrôlée.
