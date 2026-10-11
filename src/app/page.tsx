@@ -7,13 +7,14 @@ export default function Home() {
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mx-auto max-w-2xl text-center">
             <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
-              Your Life In Weeks
+              Ta vie en semaines
             </h1>
 
             <p className="mt-6 text-lg leading-8 text-gray-600">
-              Sometimes life seems really short, and other times it seems
-              impossibly long. But this chart helps to emphasize that it’s most
-              certainly finite. Those are your weeks and they’re all you’ve got.
+              Visualise les semaines vécues depuis ta naissance, repère ta
+              semaine actuelle et explore celles à venir. Ce calendrier s’étend
+              jusqu’à ton 90ᵉ anniversaire : un horizon de représentation, pas
+              une estimation de ta durée de vie.
             </p>
           </div>
 
