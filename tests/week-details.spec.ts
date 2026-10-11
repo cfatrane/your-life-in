@@ -89,9 +89,9 @@ test.describe("dans un navigateur anglophone", () => {
     page,
   }) => {
     await expect(page.locator("html")).toHaveAttribute("lang", "fr");
-    await expect(page).toHaveTitle("Ta vie en semaines");
+    await expect(page).toHaveTitle("Your Life In Weeks");
     await expect(
-      page.getByRole("heading", { name: "Ta vie en semaines" }),
+      page.getByRole("heading", { name: "Your Life In Weeks" }),
     ).toBeVisible();
     await expect(page.getByText(/^Visualise les semaines/)).toBeVisible();
     await expect(page.getByText("Inspiré de", { exact: true })).toBeVisible();
