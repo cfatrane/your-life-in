@@ -16,7 +16,7 @@ export function WeekList({
 }) {
   return (
     <div
-      className="grid grid-cols-6 gap-1 md:grid-cols-[repeat(var(--week-columns),12px)]"
+      className="grid grid-cols-[repeat(auto-fit,minmax(44px,1fr))] gap-1 md:grid-cols-[repeat(var(--week-columns),12px)]"
       style={{ "--week-columns": MAX_WEEKS_BY_AGE } as CSSProperties}
     >
       {weekList.map((week) => (
