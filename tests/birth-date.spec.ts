@@ -26,6 +26,46 @@ test.beforeEach(async ({ page }) => {
   await page.goto("/");
 });
 
+test("le jour courant reste sélectionnable après minuit sans rechargement", async ({
+  page,
+}) => {
+  await page.clock.setFixedTime(new Date("2026-10-31T23:59:00+01:00"));
+  await page.reload();
+  await page
+    .getByRole("button", { name: "Sélectionne ta date de naissance" })
+    .click();
+  await page.keyboard.press("Escape");
+  await page.clock.setFixedTime(new Date("2026-11-01T00:01:00+01:00"));
+  await page
+    .getByRole("button", { name: "Sélectionne ta date de naissance" })
+    .click();
+
+  await page.getByRole("combobox", { name: /mois/i }).selectOption("10");
+
+  const today = page.getByRole("button", {
+    name: "Aujourd'hui, dimanche 1 novembre 2026",
+    exact: true,
+  });
+
+  await expect(today).toBeEnabled();
+  await expect(
+    page.getByRole("button", { name: "lundi 2 novembre 2026", exact: true }),
+  ).toBeDisabled();
+  await today.focus();
+  await page.keyboard.press("Enter");
+  await page.keyboard.press("Escape");
+  await expect(
+    page.getByRole("button", { name: "Date de naissance : 1 novembre 2026" }),
+  ).toBeVisible();
+  await page.reload();
+  await expect(
+    page.getByRole("button", { name: "Date de naissance : 1 novembre 2026" }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("region", { name: "Calendrier de vie" }),
+  ).toBeVisible();
+});
+
 test("une erreur de lecture permet une nouvelle saisie et une sauvegarde", async ({
   page,
   context,

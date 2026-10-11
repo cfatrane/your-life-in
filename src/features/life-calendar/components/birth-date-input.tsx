@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { fr } from "react-day-picker/locale";
 
 import { CalendarIcon } from "@radix-ui/react-icons";
@@ -27,13 +28,17 @@ export function BirthDateInput({
   onChange,
 }: BirthDateInputProps) {
   const selectedDate = value ? parseISO(value) : undefined;
-  const today = new Date();
+  const [today, setToday] = useState(() => new Date());
   const label = selectedDate
     ? `Date de naissance : ${format(selectedDate, "d MMMM yyyy", { locale: fr })}`
     : "Sélectionne ta date de naissance";
 
   return (
-    <Popover>
+    <Popover
+      onOpenChange={(open) => {
+        if (open) setToday(new Date());
+      }}
+    >
       <PopoverTrigger asChild>
         <Button
           aria-label={label}
