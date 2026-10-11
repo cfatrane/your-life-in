@@ -11,9 +11,10 @@ export default function Home() {
             </h1>
 
             <p className="mt-6 text-lg leading-8 text-gray-600">
-              Sometimes life seems really short, and other times it seems
-              impossibly long. But this chart helps to emphasize that it’s most
-              certainly finite. Those are your weeks and they’re all you’ve got.
+              Visualise les semaines vécues depuis ta naissance, repère ta
+              semaine actuelle et explore celles à venir. Ce calendrier s’étend
+              jusqu’à ton 90ᵉ anniversaire : un horizon de représentation, pas
+              une estimation de ta durée de vie.
             </p>
           </div>
 

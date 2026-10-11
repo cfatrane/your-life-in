@@ -1,4 +1,5 @@
 export const APP_CONFIG = {
-  description: "Your Life In Weeks",
+  description:
+    "Visualise ta vie en semaines, de ta naissance à ton 90ᵉ anniversaire.",
   title: "Your Life In Weeks",
 } as const;

@@ -3,38 +3,40 @@
 import { memo } from "react";
 
 import { WEEK_STATES } from "@/features/life-calendar/constants";
+import { describeWeek } from "@/features/life-calendar/lib/describe-week";
 import { WeekCell } from "@/features/life-calendar/types";
-import { format } from "date-fns";
-import { fr } from "date-fns/locale";
 
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { Button } from "@/components/ui/button";
 
 import { cn } from "@/lib/utils";
 
-export const Week = memo(function Week({ week }: { week: WeekCell }) {
+export const Week = memo(function Week({
+  week,
+  selected,
+  onSelect,
+}: {
+  week: WeekCell;
+  selected: boolean;
+  onSelect: (number: number) => void;
+}) {
   const state = WEEK_STATES[week.state];
-  const title = `Semaine ${week.number}, du ${format(week.start, "d MMMM yyyy", { locale: fr })} au ${format(week.end, "d MMMM yyyy", { locale: fr })} — ${state.label}`;
 
   return (
-    <Tooltip>
-      <TooltipTrigger
-        aria-current={week.state === "current" ? "date" : undefined}
-        aria-label={title}
-        className={cn(
-          "flex size-3 items-center justify-center border text-[9px] font-bold text-blue-950 focus-visible:ring-2 focus-visible:ring-blue-800 focus-visible:ring-offset-2 focus-visible:outline-none",
-          state.className,
-        )}
-      >
-        {week.state === "current" ? "A" : null}
-      </TooltipTrigger>
-
-      <TooltipContent>
-        <p>{title}</p>
-      </TooltipContent>
-    </Tooltip>
+    <Button
+      aria-current={week.state === "current" ? "date" : undefined}
+      aria-label={describeWeek(week)}
+      aria-pressed={selected}
+      className={cn(
+        "size-3 rounded-none border p-0 text-[9px] font-bold text-blue-950 transition-none focus-visible:ring-2 focus-visible:ring-blue-800 focus-visible:ring-offset-2",
+        selected && "ring-1 ring-blue-800 ring-offset-1",
+        state.className,
+      )}
+      onClick={() => onSelect(week.number)}
+      size="icon"
+      type="button"
+      variant="ghost"
+    >
+      {week.state === "current" ? "A" : null}
+    </Button>
   );
 });

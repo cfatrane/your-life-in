@@ -64,7 +64,7 @@ export function LifeCalendar() {
           </p>
 
           <div className="mx-auto w-fit max-w-full">
-            <Calendar weekList={weekList} />
+            <Calendar key={birthDate} weekList={weekList} />
           </div>
         </section>
       )}
