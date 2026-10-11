@@ -1,17 +1,6 @@
 import { expect, type Page, test } from "@playwright/test";
 
-async function chooseDate(page: Page, date: string, day: string) {
-  const [year, month] = date.split("-");
-
-  await page.getByRole("button", { name: /date de naissance/i }).click();
-  await page.getByRole("combobox", { name: /année/i }).selectOption(year);
-  await page
-    .getByRole("combobox", { name: /mois/i })
-    .selectOption(String(Number(month) - 1));
-  await page.getByRole("button", { name: day, exact: true }).click();
-  await page.keyboard.press("Escape");
-  await expect(page.getByRole("combobox", { name: /année/i })).toBeHidden();
-}
+import { chooseDate } from "./support/birth-date";
 
 async function refuseStorage(page: Page, operation: "setItem" | "removeItem") {
   await page.evaluate((method) => {
@@ -120,24 +109,24 @@ test("saisir, modifier, retrouver puis effacer sa date après rechargement", asy
   await expect(
     page.getByRole("region", { name: "Calendrier de vie" }),
   ).toBeVisible();
-  await expect(page.getByText(/^26y 9m 10d/)).toBeVisible();
+  await expect(page.getByText(/^26 ans 9 mois 10 jours/)).toBeVisible();
   await page.reload();
   await expect(
     page.getByRole("button", { name: "Date de naissance : 1 janvier 2000" }),
   ).toBeVisible();
   await chooseDate(page, "2001-02-02", "vendredi 2 février 2001");
-  await expect(page.getByText(/^25y 8m 9d/)).toBeVisible();
+  await expect(page.getByText(/^25 ans 8 mois 9 jours/)).toBeVisible();
   await page.reload();
   await expect(
     page.getByRole("button", { name: "Date de naissance : 2 février 2001" }),
   ).toBeVisible();
-  await expect(page.getByText(/^25y 8m 9d/)).toBeVisible();
+  await expect(page.getByText(/^25 ans 8 mois 9 jours/)).toBeVisible();
   await page.getByRole("button", { name: "Effacer ma date" }).focus();
   await page.keyboard.press("Enter");
   await expect(
     page.getByRole("region", { name: "Calendrier de vie" }),
   ).toBeHidden();
-  await expect(page.getByText(/^25y 8m 9d/)).toBeHidden();
+  await expect(page.getByText(/^25 ans 8 mois 9 jours/)).toBeHidden();
   await page.reload();
   await expect(
     page.getByRole("button", { name: "Sélectionne ta date de naissance" }),
@@ -179,7 +168,7 @@ test("une sauvegarde invalide invite à ressaisir sans calendrier ni compteur", 
     await expect(
       page.getByRole("region", { name: "Calendrier de vie" }),
     ).toBeHidden();
-    await expect(page.getByText(/\d+y \d+m \d+d/)).toBeHidden();
+    await expect(page.getByText(/\d+ ans \d+ mois \d+ jours/)).toBeHidden();
   }
   await chooseDate(page, "2000-02-29", "mardi 29 février 2000");
   await page.reload();
@@ -205,7 +194,7 @@ test("une erreur d’écriture conserve le calendrier pour la visite sans annonc
   await expect(
     page.getByRole("region", { name: "Calendrier de vie" }),
   ).toBeVisible();
-  await expect(page.getByText(/^26y 9m 10d/)).toBeVisible();
+  await expect(page.getByText(/^26 ans 9 mois 10 jours/)).toBeVisible();
   await page.reload();
   await expect(
     page.getByRole("button", { name: "Sélectionne ta date de naissance" }),
@@ -219,12 +208,12 @@ test("une erreur d’écriture conserve le calendrier pour la visite sans annonc
   await expect(
     page.getByRole("status", { name: "Sauvegarde de la date de naissance" }),
   ).toContainText("Impossible d’enregistrer");
-  await expect(page.getByText(/^25y 8m 9d/)).toBeVisible();
+  await expect(page.getByText(/^25 ans 8 mois 9 jours/)).toBeVisible();
   await page.reload();
   await expect(
     page.getByRole("button", { name: "Date de naissance : 1 janvier 2000" }),
   ).toBeVisible();
-  await expect(page.getByText(/^26y 9m 10d/)).toBeVisible();
+  await expect(page.getByText(/^26 ans 9 mois 10 jours/)).toBeVisible();
 });
 
 test("un effacement refusé avertit que la date peut revenir et reste réessayable", async ({
@@ -245,7 +234,7 @@ test("un effacement refusé avertit que la date peut revenir et reste réessayab
   await expect(
     page.getByRole("region", { name: "Calendrier de vie" }),
   ).toBeHidden();
-  await expect(page.getByText(/^26y 9m 10d/)).toBeHidden();
+  await expect(page.getByText(/^26 ans 9 mois 10 jours/)).toBeHidden();
   await page.reload();
   await expect(
     page.getByRole("button", { name: "Date de naissance : 1 janvier 2000" }),

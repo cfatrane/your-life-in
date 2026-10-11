@@ -1,27 +1,18 @@
-import { NUMBER_OF_WEEKS_BY_YEAR } from "@/features/life-calendar/constants";
+import { MAX_WEEKS_BY_AGE } from "@/features/life-calendar/constants";
 
 export function WeekNumberList() {
   return (
-    <div className="grid shrink">
-      <p>Weeks</p>
+    <div>
+      <p className="mb-2">Débuts de semaine dans l’année d’âge</p>
 
       <div
         className="grid gap-1"
-        style={{
-          gridTemplateColumns: `repeat(${NUMBER_OF_WEEKS_BY_YEAR}, minmax(0, 1fr))`,
-        }}
+        style={{ gridTemplateColumns: `repeat(${MAX_WEEKS_BY_AGE}, 12px)` }}
       >
-        {Array.from({ length: NUMBER_OF_WEEKS_BY_YEAR }, (_, index) => ({
-          id: index,
-        })).map((_, index) => (
-          <div
-            className="flex size-3 shrink-0 items-center justify-center"
-            key={index}
-          >
-            {index % 3 === 0 && (
-              <p className="text-center text-xs">{index + 1}</p>
-            )}
-          </div>
+        {Array.from({ length: MAX_WEEKS_BY_AGE }, (_, index) => (
+          <span className="text-center text-xs" key={index}>
+            {index % 3 === 0 ? index + 1 : null}
+          </span>
         ))}
       </div>
     </div>

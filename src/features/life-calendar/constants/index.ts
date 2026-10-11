@@ -1,70 +1,17 @@
-import { Category } from "@/features/life-calendar/types";
+export const NUMBER_OF_YEARS_BY_LIFE = 90;
+export const MAX_WEEKS_BY_AGE = 53;
 
-const LIFE_PERIOD: Category[] = [
-  {
-    color: "bg-blue-500",
-    label: "Nourrisson",
-    max: 2,
-    min: 0,
+export const WEEK_STATES = {
+  past: {
+    label: "Semaine écoulée",
+    className: "bg-slate-700 border-slate-700",
   },
-  {
-    color: "bg-green-800",
-    label: "École Maternelle",
-    max: 6,
-    min: 2,
-    parent: "École Primaire",
+  current: {
+    label: "Semaine actuelle",
+    className: "bg-blue-100 border-blue-800 outline outline-2 outline-blue-800",
   },
-  {
-    color: "bg-green-500",
-    label: "École Élémentaire",
-    max: 11,
-    min: 6,
-    parent: "École Primaire",
+  future: {
+    label: "Semaine à venir",
+    className: "bg-white border-dashed border-slate-400",
   },
-  {
-    color: "bg-yellow-400",
-    label: "Collège",
-    max: 14,
-    min: 11,
-  },
-  {
-    color: "bg-orange-400",
-    label: "Lycée",
-    max: 18,
-    min: 14,
-  },
-  {
-    color: "bg-purple-500",
-    label: "Université",
-    max: 21,
-    min: 18,
-  },
-  {
-    color: "bg-red-500",
-    label: "Carrière",
-    max: 64,
-    min: 21,
-  },
-  {
-    color: "bg-black",
-    label: "Retraite",
-    max: 90,
-    min: 64,
-  },
-];
-
-const NUMBER_OF_CASE_FOR_YEARS = 9 * 10;
-const NUMBER_OF_WEEKS_BY_MONTHS = 4;
-const NUMBER_OF_WEEKS_BY_YEAR = 52;
-const NUMBER_OF_YEARS_BY_LIFE = 90;
-const NUMBER_OF_CASE_FOR_WEEKS =
-  NUMBER_OF_WEEKS_BY_YEAR * NUMBER_OF_YEARS_BY_LIFE;
-
-export {
-  LIFE_PERIOD,
-  NUMBER_OF_CASE_FOR_WEEKS,
-  NUMBER_OF_CASE_FOR_YEARS,
-  NUMBER_OF_YEARS_BY_LIFE,
-  NUMBER_OF_WEEKS_BY_MONTHS,
-  NUMBER_OF_WEEKS_BY_YEAR,
-};
+} as const;
