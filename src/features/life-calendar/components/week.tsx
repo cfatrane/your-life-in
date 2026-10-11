@@ -27,7 +27,7 @@ export const Week = memo(function Week({
       aria-label={describeWeek(week)}
       aria-pressed={selected}
       className={cn(
-        "size-3 rounded-none border p-0 text-[9px] font-bold text-blue-950 transition-none focus-visible:ring-2 focus-visible:ring-blue-800 focus-visible:ring-offset-2",
+        "h-11 min-w-11 rounded-none border p-0 text-xs font-bold text-blue-950 transition-none focus-visible:ring-2 focus-visible:ring-blue-800 focus-visible:ring-offset-2 md:size-3 md:min-w-0 md:text-[9px]",
         selected && "ring-1 ring-blue-800 ring-offset-1",
         state.className,
       )}

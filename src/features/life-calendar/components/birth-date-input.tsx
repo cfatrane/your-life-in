@@ -43,7 +43,7 @@ export function BirthDateInput({
         <Button
           aria-label={label}
           className={cn(
-            "h-12 w-[280px] justify-start text-left font-normal",
+            "h-12 w-[280px] max-w-full justify-start text-left font-normal",
             !selectedDate && "text-muted-foreground",
           )}
           disabled={disabled}

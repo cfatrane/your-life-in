@@ -35,7 +35,12 @@ export function LifeCalendar() {
           {message}
         </p>
 
-        <Button disabled={!ready} onClick={clearBirthDate} variant="outline">
+        <Button
+          className="h-11"
+          disabled={!ready}
+          onClick={clearBirthDate}
+          variant="outline"
+        >
           Effacer ma date
         </Button>
 
@@ -63,7 +68,7 @@ export function LifeCalendar() {
               : "Tu as dépassé l'horizon de ce calendrier"}
           </p>
 
-          <div className="mx-auto w-fit max-w-full">
+          <div className="mx-auto w-full max-w-full md:w-fit">
             <Calendar key={birthDate} weekList={weekList} />
           </div>
         </section>
