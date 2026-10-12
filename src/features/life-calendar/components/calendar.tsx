@@ -1,132 +1,218 @@
-import { useId, useState } from "react";
+import { useId, useLayoutEffect, useRef, useState } from "react";
 
-import { NUMBER_OF_YEARS_BY_LIFE } from "@/features/life-calendar/constants";
+import {
+  MAX_WEEKS_BY_AGE,
+  NUMBER_OF_YEARS_BY_LIFE,
+} from "@/features/life-calendar/constants";
 import { describeWeek } from "@/features/life-calendar/lib/describe-week";
+import { anniversary } from "@/features/life-calendar/lib/life-dates";
 import { WeekCell } from "@/features/life-calendar/types";
+import { format, subDays } from "date-fns";
+import { fr } from "date-fns/locale";
 
 import { Button } from "@/components/ui/button";
 
-import { cn } from "@/lib/utils";
-
 import { WeekList } from "./week-list";
-import { WeekNumberList } from "./week-number-list";
 
 export function Calendar({ weekList }: { weekList: WeekCell[] }) {
-  const id = useId();
-  const [selectedAge, setSelectedAge] = useState(
-    () =>
-      weekList.find((week) => week.state === "current")?.age ??
-      NUMBER_OF_YEARS_BY_LIFE - 1,
-  );
-  const decade = Math.floor(selectedAge / 10);
-  const [selectedNumber, setSelectedNumber] = useState<number | null>(null);
-  const selectedWeek = weekList.find((week) => week.number === selectedNumber);
-  const details = selectedWeek
-    ? describeWeek(selectedWeek)
-    : "Sélectionne une semaine pour consulter ses détails. Au clavier, utilise Tab pour naviguer, puis Entrée ou Espace pour sélectionner.";
   const years = Array.from(
     { length: NUMBER_OF_YEARS_BY_LIFE },
     () => [] as WeekCell[],
   );
 
   for (const week of weekList) years[week.age].push(week);
+  const chart = useRef<SVGSVGElement>(null);
+  const [width, setWidth] = useState(300);
+
+  useLayoutEffect(() => {
+    const element = chart.current;
+
+    if (!element) return;
+    const observer = new ResizeObserver(([entry]) => {
+      if (entry.contentRect.width) setWidth(entry.contentRect.width);
+    });
+
+    observer.observe(element);
+
+    return () => observer.disconnect();
+  }, []);
+  const id = useId();
+  const current = weekList.find((week) => week.state === "current");
+  const [age, setAge] = useState(current?.age ?? years.length - 1);
+  const [detailsOpen, setDetailsOpen] = useState(false);
+  const [selectedNumber, setSelectedNumber] = useState<number | null>(null);
+  const openButton = useRef<HTMLButtonElement>(null);
+  const heading = useRef<HTMLHeadingElement>(null);
+  const returnScroll = useRef<number | null>(null);
+  const weeks = years[age];
+  const selected = weeks.find((week) => week.number === selectedNumber);
+  const birth = years[0][0].start;
+  const dateLabel = (date: Date) => format(date, "d MMMM yyyy", { locale: fr });
+
+  useLayoutEffect(() => {
+    if (detailsOpen) {
+      heading.current?.focus();
+    } else if (returnScroll.current !== null) {
+      openButton.current?.focus({ preventScroll: true });
+      window.scrollTo({ top: returnScroll.current, behavior: "instant" });
+      returnScroll.current = null;
+    }
+  }, [detailsOpen]);
 
   return (
-    <div>
-      <p
-        aria-label="Détails de la semaine"
-        className="bg-background sticky top-2 z-10 mb-4 hidden rounded-md border p-4 text-center text-sm shadow-sm md:block"
-        role="status"
-      >
-        {details}
-      </p>
-
-      <label className="mb-4 flex flex-col gap-2 md:hidden">
-        Décennie de vie
-        <select
-          className="bg-background h-11 w-full rounded-md border px-3 text-base focus-visible:outline-2 focus-visible:outline-blue-800"
-          onChange={(event) => {
-            setSelectedAge(Number(event.target.value) * 10);
-            setSelectedNumber(null);
-          }}
-          value={decade}
+    <div className="story-calendar-body">
+      <div hidden={detailsOpen}>
+        <svg
+          aria-describedby={`${id}-description`}
+          aria-labelledby={`${id}-title`}
+          className="life-points"
+          ref={chart}
+          role="img"
+          viewBox={`0 0 ${width} 736`}
         >
-          {Array.from({ length: NUMBER_OF_YEARS_BY_LIFE / 10 }, (_, index) => (
-            <option key={index} value={index}>
-              {`${index * 10}–${index * 10 + 9} ans`}
-            </option>
-          ))}
-        </select>
-      </label>
+          <title id={`${id}-title`}>Aperçu des 90 années</title>
 
-      <div className="md:overflow-x-auto md:p-2">
-        <div className="md:w-max">
-          <div className="mb-2 hidden grid-cols-[4rem_auto] gap-2 md:grid">
-            <span className="self-end">Âge</span>
+          <desc id={`${id}-description`}>
+            {`De 0 à 89 ans. ${current ? `Semaine actuelle : ${current.number}, à ${current.age} ans, repère A.` : "Toutes les semaines sont écoulées : horizon de 90 ans dépassé."} Les grands points sont écoulés, les petits points sont à venir. Lis de gauche à droite, puis de haut en bas.`}
+          </desc>
 
-            <WeekNumberList />
-          </div>
+          {years.map((year, index) => {
+            const y = 18 + index * 7 + Math.floor(index / 10) * 9;
+            const step = (width - 34) / MAX_WEEKS_BY_AGE;
 
-          {years.map((weeks, age) => (
-            <div
-              aria-label={`Âge : ${age} ${age === 1 ? "an" : "ans"}`}
-              className={cn(
-                "mb-2 items-start gap-2 md:mb-0 md:grid md:grid-cols-[4rem_auto] md:items-center",
-                Math.floor(age / 10) !== decade && "hidden",
-              )}
-              key={age}
-              role="group"
-            >
-              <span className="hidden text-xs leading-4 md:block">
-                {`${age} ${age === 1 ? "an" : "ans"}`}
-              </span>
-
-              <Button
-                aria-controls={`${id}-year-${age}`}
-                aria-expanded={age === selectedAge}
-                aria-label={`Âge : ${age} ${age === 1 ? "an" : "ans"}`}
-                className="h-11 w-full justify-between md:hidden"
-                onClick={() => {
-                  setSelectedAge(age);
-                  setSelectedNumber(null);
-                }}
-                type="button"
-                variant="outline"
-              >
-                {`${age} ${age === 1 ? "an" : "ans"}`}
-
-                <span aria-hidden="true">
-                  {age === selectedAge ? "−" : "+"}
-                </span>
-              </Button>
-
-              <div
-                className={cn(
-                  "mt-2 md:mt-0 md:block",
-                  age !== selectedAge && "hidden",
-                )}
-                id={`${id}-year-${age}`}
-              >
-                <WeekList
-                  onSelect={setSelectedNumber}
-                  selectedNumber={selectedNumber}
-                  weekList={weeks}
-                />
-
-                {age === selectedAge && (
-                  <p
-                    aria-label="Détails de la semaine"
-                    className="mt-4 rounded-md border p-3 text-sm md:hidden"
-                    role="status"
+            return (
+              <g aria-hidden="true" data-age={index} key={index}>
+                {(index % 10 === 0 ||
+                  index === current?.age ||
+                  index === 89) && (
+                  <text
+                    className={
+                      current?.age === index
+                        ? "point-label current"
+                        : "point-label"
+                    }
+                    fontSize="12"
+                    x="0"
+                    y={y + 4}
                   >
-                    {details}
-                  </p>
+                    {index}
+
+                    {current?.age === index ? " A" : ""}
+                  </text>
                 )}
-              </div>
-            </div>
-          ))}
-        </div>
+
+                {year.map((week, column) => {
+                  const radius =
+                    (Math.min(4.6, step * 0.66) / 2) *
+                    (week.state === "current"
+                      ? 1.25
+                      : week.state === "past"
+                        ? 1
+                        : 0.48);
+                  const x = 34 + column * step + step / 2;
+
+                  return (
+                    <g key={week.number}>
+                      <circle
+                        className={`life-point ${week.state}`}
+                        cx={x}
+                        cy={y}
+                        data-state={week.state}
+                        data-week={week.number}
+                        r={radius}
+                      />
+
+                      {week.state === "current" && (
+                        <circle
+                          className="point-ring"
+                          cx={x}
+                          cy={y}
+                          r={radius + 1.6}
+                        />
+                      )}
+                    </g>
+                  );
+                })}
+              </g>
+            );
+          })}
+        </svg>
+
+        <label
+          className="mb-3 flex flex-col gap-2 text-base"
+          htmlFor={`${id}-year`}
+        >
+          Explorer une année
+          <select
+            className="story-year-select"
+            id={`${id}-year`}
+            onChange={(event) => {
+              setAge(Number(event.target.value));
+              setSelectedNumber(null);
+            }}
+            value={age}
+          >
+            {years.map((_, index) => (
+              <option
+                key={index}
+                value={index}
+              >{`De ${index} à ${index + 1} ${index === 0 ? "an" : "ans"}${current?.age === index ? " — semaine actuelle" : ""}`}</option>
+            ))}
+          </select>
+        </label>
+
+        <Button
+          className="story-button w-full"
+          onClick={() => {
+            returnScroll.current = window.scrollY;
+            setDetailsOpen(true);
+          }}
+          ref={openButton}
+          type="button"
+        >
+          Explorer cette année
+        </Button>
       </div>
+
+      {detailsOpen && (
+        <section aria-labelledby={`${id}-heading`}>
+          <Button
+            className="story-button mb-6 w-full"
+            onClick={() => setDetailsOpen(false)}
+            type="button"
+            variant="outline"
+          >
+            Revenir à toute ma vie
+          </Button>
+
+          <h2
+            className="focus-visible:outline-ring mb-3 focus-visible:outline-2"
+            id={`${id}-heading`}
+            ref={heading}
+            tabIndex={-1}
+          >
+            {`De ${age} à ${age + 1} ${age === 0 ? "an" : "ans"}`}
+          </h2>
+
+          <p className="mb-4 text-sm">{`Du ${dateLabel(anniversary(birth, age))} au ${dateLabel(subDays(anniversary(birth, age + 1), 1))}`}</p>
+
+          <p
+            aria-label="Détails de la semaine"
+            className="story-week-status"
+            role="status"
+          >
+            {selected
+              ? describeWeek(selected)
+              : "Sélectionne une semaine pour consulter ses détails. Au clavier, utilise Tab, puis Entrée ou Espace."}
+          </p>
+
+          <WeekList
+            onSelect={setSelectedNumber}
+            selectedNumber={selectedNumber}
+            weekList={weeks}
+          />
+        </section>
+      )}
     </div>
   );
 }

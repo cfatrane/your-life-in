@@ -8,6 +8,8 @@ import {
 } from "@/features/life-calendar/lib/life-dates";
 import { intervalToDuration } from "date-fns";
 
+import { Button } from "@/components/ui/button";
+
 type TimeSinceBirthProps = {
   birthDate: string | null;
   today: string;
@@ -20,7 +22,19 @@ function formatWithLeadingZero(value: number) {
 }
 
 export function TimeSinceBirth({ birthDate, today }: TimeSinceBirthProps) {
+  const [paused, setPaused] = useState(false);
+  const [reducedMotion, setReducedMotion] = useState(false);
   const [nowMs, setNowMs] = useState(() => Date.now());
+
+  useEffect(() => {
+    const media = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const update = () => setReducedMotion(media.matches);
+
+    update();
+    media.addEventListener("change", update);
+
+    return () => media.removeEventListener("change", update);
+  }, []);
 
   useEffect(() => {
     if (!birthDate) {
@@ -28,6 +42,7 @@ export function TimeSinceBirth({ birthDate, today }: TimeSinceBirthProps) {
     }
 
     setNowMs(Date.now());
+    if (reducedMotion || paused) return;
     const interval = window.setInterval(() => {
       setNowMs(Date.now());
     }, 10);
@@ -35,7 +50,7 @@ export function TimeSinceBirth({ birthDate, today }: TimeSinceBirthProps) {
     return () => {
       window.clearInterval(interval);
     };
-  }, [birthDate, today]);
+  }, [birthDate, today, reducedMotion, paused]);
 
   const elapsed = useMemo(() => {
     if (!birthDate) {
@@ -70,12 +85,24 @@ export function TimeSinceBirth({ birthDate, today }: TimeSinceBirthProps) {
   const elapsedText = `${elapsed.years} ${elapsed.years === 1 ? "an" : "ans"} ${elapsed.months} mois ${elapsed.days} ${elapsed.days === 1 ? "jour" : "jours"} ${elapsed.hours}:${elapsed.minutes}:${elapsed.seconds}`;
 
   return (
-    <div className="text-center">
-      <p className="font-mono text-2xl tracking-tight text-zinc-900 sm:text-4xl md:text-5xl">
+    <div>
+      <p className="elapsed-time">
         {elapsedText}
 
-        <span className="text-zinc-400">.{elapsed.centiseconds}</span>
+        {!reducedMotion && (
+          <span className="elapsed-fraction">.{elapsed.centiseconds}</span>
+        )}
       </p>
+
+      {!reducedMotion && (
+        <Button
+          className="counter-pause"
+          onClick={() => setPaused(!paused)}
+          variant="ghost"
+        >
+          {paused ? "Reprendre le compteur" : "Mettre le compteur en pause"}
+        </Button>
+      )}
     </div>
   );
 }

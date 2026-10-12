@@ -1,30 +1,88 @@
 import { LifeCalendar } from "@/features/life-calendar/components/life-calendar";
 
+import { Button } from "@/components/ui/button";
+
 export default function Home() {
   return (
-    <div className="relative pt-14">
-      <div className="py-24 sm:py-12">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-2xl text-center">
-            <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
-              Your Life In Weeks
+    <>
+      <header className="story-header">
+        <div className="story-shell story-header-inner">
+          <a className="story-brand" href="#intro">
+            Your Life In Weeks
+          </a>
+
+          <Button asChild className="story-button" variant="outline">
+            <a href="#calendar">Mon calendrier</a>
+          </Button>
+        </div>
+      </header>
+
+      <section
+        aria-labelledby="intro-title"
+        className="story-shell story-hero"
+        id="intro"
+      >
+        <div className="story-split">
+          <div>
+            <p className="story-kicker">01 / Prendre du recul</p>
+
+            <h1 id="intro-title">
+              <span className="block">Ta vie,</span>
+
+              <span className="block">semaine après</span>
+
+              <em className="block">semaine.</em>
             </h1>
 
-            <p className="mt-6 text-lg leading-8 text-gray-600">
-              Visualise les semaines vécues depuis ta naissance, repère ta
-              semaine actuelle et explore celles à venir. Ce calendrier s’étend
-              jusqu’à ton 90ᵉ anniversaire : un horizon de représentation, pas
-              une estimation de ta durée de vie.
+            <p className="story-copy">
+              Le temps paraît immense. Un calendrier le rend concret. Découvre
+              le chemin déjà parcouru, puis regarde où tu en es aujourd’hui.
             </p>
-          </div>
 
-          <div className="mt-16 flow-root sm:mt-24">
-            <div className="-m-2 p-2 lg:-m-4 lg:rounded-2xl lg:p-4">
-              <LifeCalendar />
+            <div className="story-actions">
+              <Button asChild className="story-button">
+                <a href="#birth">Découvrir ma vie</a>
+              </Button>
+
+              <a className="story-text-link" href="#calendar">
+                Aller au calendrier
+              </a>
             </div>
           </div>
+
+          <div className="story-motif">
+            <div aria-hidden="true" className="story-seven">
+              7
+            </div>
+
+            <p>
+              Sept jours.
+              <br />
+              Un point de ta vie.
+            </p>
+          </div>
         </div>
-      </div>
-    </div>
+
+        <nav aria-label="Les étapes du calendrier" className="story-chapters">
+          <a href="#birth">
+            <span>02</span> Ta naissance
+          </a>
+
+          <a href="#journey">
+            <span>03</span> Ton parcours
+          </a>
+
+          <a href="#calendar">
+            <span>04</span> Toute ta vie
+          </a>
+
+          <a href="#present">
+            <span>05</span> Aujourd’hui
+          </a>
+        </nav>
+      </section>
+
+      <LifeCalendar />
+    </>
   );
 }

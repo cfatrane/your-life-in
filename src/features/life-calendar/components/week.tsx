@@ -27,8 +27,8 @@ export const Week = memo(function Week({
       aria-label={describeWeek(week)}
       aria-pressed={selected}
       className={cn(
-        "h-11 min-w-11 rounded-none border p-0 text-xs font-bold text-blue-950 transition-none focus-visible:ring-2 focus-visible:ring-blue-800 focus-visible:ring-offset-2 md:size-3 md:min-w-0 md:text-[9px]",
-        selected && "ring-1 ring-blue-800 ring-offset-1",
+        "story-week focus-visible:ring-ring rounded-full border p-0 text-xs font-medium focus-visible:ring-2 focus-visible:ring-offset-2",
+        selected && "ring-ring ring-2 ring-offset-2",
         state.className,
       )}
       onClick={() => onSelect(week.number)}
@@ -36,7 +36,9 @@ export const Week = memo(function Week({
       type="button"
       variant="ghost"
     >
-      {week.state === "current" ? "A" : null}
+      {week.number}
+
+      {week.state === "current" ? " A" : ""}
     </Button>
   );
 });
