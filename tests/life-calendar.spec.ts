@@ -234,7 +234,7 @@ test("la grille couvre chaque jour une seule fois avec 52 ou 53 dÃ©buts par annÃ
     groups.map((group) => ({
       age: Number(group.getAttribute("aria-label")?.match(/\d+/)?.[0]),
       labels: Array.from(
-        group.querySelectorAll("button"),
+        group.querySelectorAll('button[aria-label^="Semaine "]'),
         (button) => button.getAttribute("aria-label") ?? "",
       ),
     })),

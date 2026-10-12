@@ -1,3 +1,5 @@
+import type { CSSProperties } from "react";
+
 import { MAX_WEEKS_BY_AGE } from "@/features/life-calendar/constants";
 import { WeekCell } from "@/features/life-calendar/types";
 
@@ -14,8 +16,8 @@ export function WeekList({
 }) {
   return (
     <div
-      className="grid gap-1"
-      style={{ gridTemplateColumns: `repeat(${MAX_WEEKS_BY_AGE}, 12px)` }}
+      className="grid grid-cols-6 gap-1 md:grid-cols-[repeat(var(--week-columns),12px)]"
+      style={{ "--week-columns": MAX_WEEKS_BY_AGE } as CSSProperties}
     >
       {weekList.map((week) => (
         <Week
