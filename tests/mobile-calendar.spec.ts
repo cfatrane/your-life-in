@@ -28,7 +28,9 @@ test("toute la vie reste cadrée sur mobile, puis une année se consulte et le r
 
     expect(box.x).toBeGreaterThanOrEqual(0);
     expect(box.x + box.width).toBeLessThanOrEqual(width);
-    expect(box.height).toBeLessThan(450);
+    expect(box.height).toBe(736);
+    await expect(overview.locator("g[data-age]")).toHaveCount(90);
+    await expect(overview.locator("circle[data-week]")).toHaveCount(4697);
     expect(
       await page.evaluate(() => document.documentElement.scrollWidth),
     ).toBeLessThanOrEqual(width);
@@ -51,8 +53,8 @@ test("toute la vie reste cadrée sur mobile, puis une année se consulte et le r
   });
   const box = (await first.boundingBox())!;
 
-  expect(box.width).toBeGreaterThanOrEqual(44);
-  expect(box.height).toBeGreaterThanOrEqual(44);
+  expect(box.width).toBeGreaterThanOrEqual(48);
+  expect(box.height).toBeGreaterThanOrEqual(48);
   await first.tap();
   await expect(
     page.getByRole("status", { name: "Détails de la semaine" }),
@@ -119,6 +121,9 @@ test("la date restaurée ouvre l’année actuelle et son changement réinitiali
   await expect(explore).toBeFocused();
   await page.getByRole("button", { name: "Effacer ma date" }).click();
   await expect(overview).toBeHidden();
+  await expect(
+    page.getByRole("button", { name: "Sélectionne ta date de naissance" }),
+  ).toBeFocused();
   await expect(
     page.getByText(
       "Sélectionne ta date de naissance pour afficher ton calendrier.",

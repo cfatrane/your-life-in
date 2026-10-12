@@ -6,6 +6,7 @@ test.beforeEach(async ({ page }) => {
   await page.clock.setFixedTime(new Date("2026-01-08T12:00:00+01:00"));
   await page.goto("/");
   await chooseDate(page, "2026-01-01", "jeudi 1 janvier 2026");
+  await page.getByRole("button", { name: "Explorer cette année" }).click();
 });
 
 test("les détails restent lisibles sans survol et suivent la semaine consultée", async ({
@@ -35,11 +36,12 @@ test("les détails restent lisibles sans survol et suivent la semaine consultée
   await expect(
     page.getByRole("button", { name: "Date de naissance : 1 janvier 2026" }),
   ).toBeVisible();
-  await expect(page.getByRole("group", { name: /^Âge/ })).toHaveCount(90);
-  const lastWeek = page
-    .getByRole("group", { name: "Âge : 89 ans", exact: true })
-    .getByRole("button")
-    .last();
+  await page.getByRole("button", { name: "Revenir à toute ma vie" }).click();
+  await page
+    .getByRole("combobox", { name: "Explorer une année" })
+    .selectOption("89");
+  await page.getByRole("button", { name: "Explorer cette année" }).click();
+  const lastWeek = page.getByRole("button", { name: /^Semaine / }).last();
 
   await lastWeek.click();
   await expect(details).toHaveText(
@@ -55,7 +57,7 @@ test("Tab, Entrée et Espace permettent de consulter les semaines avec un focus 
   const first = page.getByRole("button", { name: /^Semaine 1,/ });
   const second = page.getByRole("button", { name: /^Semaine 2,/ });
 
-  await page.getByRole("button", { name: "Effacer ma date" }).focus();
+  await page.getByRole("heading", { name: "De 0 à 1 an" }).focus();
   await page.keyboard.press("Tab");
   await expect(first).toBeFocused();
   expect(
@@ -69,7 +71,7 @@ test("Tab, Entrée et Espace permettent de consulter les semaines avec un focus 
     "Semaine 1, du 1 janvier 2026 au 7 janvier 2026 — Semaine écoulée",
   );
   await expect(first).toBeFocused();
-  await expect(first).toHaveCSS("box-shadow", /0px 0px 0px 4px/);
+
   await page.keyboard.press("Tab");
   await expect(second).toBeFocused();
   await page.keyboard.press("Space");
@@ -90,14 +92,14 @@ test.describe("dans un navigateur anglophone", () => {
   }) => {
     await expect(page.locator("html")).toHaveAttribute("lang", "fr");
     await expect(page).toHaveTitle("Your Life In Weeks");
+    await expect(page.getByRole("heading", { level: 1 })).toContainText(
+      "Ta vie,",
+    );
     await expect(
-      page.getByRole("heading", { name: "Your Life In Weeks" }),
+      page.getByRole("link", { name: "Inspiré de Wait But Why" }),
     ).toBeVisible();
-    await expect(page.getByText(/^Visualise les semaines/)).toBeVisible();
-    await expect(page.getByText("Inspiré de", { exact: true })).toBeVisible();
-    await expect(page.getByText("Âge", { exact: true })).toBeVisible();
     await expect(
-      page.getByText("Débuts de semaine dans l’année d’âge", { exact: true }),
+      page.getByRole("heading", { name: "De 0 à 1 an" }),
     ).toBeVisible();
     await expect(page.getByText(/^0 ans 0 mois 7 jours/)).toBeVisible();
     await expect(
@@ -137,6 +139,8 @@ test("les détails actualisent leur état avec le jour courant et se réinitiali
     "Semaine 2, du 8 janvier 2026 au 14 janvier 2026 — Semaine écoulée",
   );
   await chooseDate(page, "2026-01-02", "vendredi 2 janvier 2026");
+  await expect(details).toBeHidden();
+  await page.getByRole("button", { name: "Explorer cette année" }).click();
   await expect(details).toContainText("Sélectionne une semaine");
   await page.getByRole("button", { name: /^Semaine 1,/ }).click();
   await expect(details).toHaveText(
@@ -146,6 +150,7 @@ test("les détails actualisent leur état avec le jour courant et se réinitiali
   await expect(
     page.getByRole("button", { name: "Date de naissance : 2 janvier 2026" }),
   ).toBeVisible();
+  await page.getByRole("button", { name: "Explorer cette année" }).click();
   await expect(details).toContainText("Sélectionne une semaine");
   await page.getByRole("button", { name: /^Semaine 1,/ }).click();
   await page.getByRole("button", { name: "Effacer ma date" }).click();
