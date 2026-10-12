@@ -1,10 +1,16 @@
-# Your Life In (WIP)
+# Your Life In Weeks
 
-## WORK IN PROGRESS
+Une application web en français pour prendre du recul sur le temps d’une vie.
+Saisis ta date de naissance pour visualiser les semaines déjà vécues dans un
+calendrier couvrant 90 ans et consulter le temps écoulé depuis ta naissance.
 
-Test It : [https://your-life-in.vercel.app/](https://your-life-in.vercel.app/)
+L’application fonctionne sans compte. Ta date de naissance est mémorisée
+localement dans ton navigateur pour être retrouvée entre les visites, et tu peux
+l’effacer à tout moment.
 
-Based on [Your Life In Weeks](https://waitbutwhy.com/2014/05/life-weeks.html) by [Wait But Why](https://waitbutwhy.com/)
+Essayer : [https://your-life-in.vercel.app/](https://your-life-in.vercel.app/)
+
+Inspiré de [Your Life In Weeks](https://waitbutwhy.com/2014/05/life-weeks.html) par [Wait But Why](https://waitbutwhy.com/).
 
 > Each row of weeks makes up one year. That’s how many weeks it takes to turn a newborn into a 90-year-old.
 >
