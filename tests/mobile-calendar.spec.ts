@@ -187,7 +187,7 @@ for (const scenario of [
     );
     if (!scenario.current)
       await expect(
-        page.getByText("Tu as dépassé l'horizon de ce calendrier", {
+        page.getByText("Tu as dépassé l'horizon choisi", {
           exact: true,
         }),
       ).toBeVisible();

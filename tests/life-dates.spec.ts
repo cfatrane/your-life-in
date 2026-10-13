@@ -91,7 +91,7 @@ for (const [birth, today] of [
       elapsedDays: 7,
       completedWeeks: 1,
     });
-    const weeks = buildWeekList(birth, today);
+    const weeks = buildWeekList(birth, today, 1);
 
     expect(weeks[0].state).toBe("past");
     expect(weeks[1]).toMatchObject({
@@ -120,5 +120,43 @@ test("semaine traversant l’anniversaire et dernière semaine tronquée", () =>
   });
   expect(
     buildWeekList("2000-01-01", "2090-01-01").every((w) => w.state === "past"),
+  ).toBe(true);
+});
+
+for (const horizon of [1, 75, 120]) {
+  test(`${horizon} ans de jours civils sans trou ni doublon`, () => {
+    const weeks = buildWeekList("2024-02-29", "2025-03-01", horizon);
+    let next = parseISO("2024-02-29");
+
+    for (const [index, week] of weeks.entries()) {
+      expect(week.number).toBe(index + 1);
+      expect(week.start).toEqual(next);
+      const duration = differenceInCalendarDays(week.end, week.start) + 1;
+
+      expect(duration).toBeGreaterThan(0);
+      expect(duration).toBeLessThanOrEqual(7);
+      if (index < weeks.length - 1) expect(duration).toBe(7);
+      expect(week.age).toBeLessThan(horizon);
+      next = addDays(week.end, 1);
+    }
+    expect(next).toEqual(anniversary(parseISO("2024-02-29"), horizon));
+    expect(weeks.at(-1)?.end).toEqual(addDays(next, -1));
+  });
+}
+
+test("l’horizon d’un an s’arrête exactement à l’anniversaire du 1er mars", () => {
+  const weeks = buildWeekList("2024-02-29", "2025-02-28", 1);
+
+  expect(weeks.at(-1)).toMatchObject({
+    number: 53,
+    age: 0,
+    start: parseISO("2025-02-27"),
+    end: parseISO("2025-02-28"),
+    state: "current",
+  });
+  expect(
+    buildWeekList("2024-02-29", "2025-03-01", 1).every(
+      (week) => week.state === "past",
+    ),
   ).toBe(true);
 });

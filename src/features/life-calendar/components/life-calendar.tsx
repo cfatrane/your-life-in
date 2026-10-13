@@ -1,19 +1,22 @@
 "use client";
 
-import { useMemo, useRef } from "react";
+import { useId, useMemo, useRef, useState } from "react";
 
 import { BirthDateInput } from "@/features/life-calendar/components/birth-date-input";
 import { Calendar } from "@/features/life-calendar/components/calendar";
 import { Legend } from "@/features/life-calendar/components/legend";
 import { TimeSinceBirth } from "@/features/life-calendar/components/time-since-birth";
+import { NUMBER_OF_YEARS_BY_LIFE } from "@/features/life-calendar/constants";
 import { useBirthDate } from "@/features/life-calendar/hooks/use-birth-date";
 import { useCurrentDay } from "@/features/life-calendar/hooks/use-current-day";
 import { buildWeekList } from "@/features/life-calendar/lib/build-week-list";
+import { isValidHorizon } from "@/features/life-calendar/lib/calendar-horizon";
 import { lifeSummary } from "@/features/life-calendar/lib/life-dates";
 import { addDays, differenceInCalendarDays, format, parseISO } from "date-fns";
 import { fr } from "date-fns/locale";
 
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 const dateLabel = (date: Date) => format(date, "d MMMM yyyy", { locale: fr });
 const numberLabel = (number: number) => number.toLocaleString("fr-FR");
@@ -22,10 +25,15 @@ export function LifeCalendar() {
   const { birthDate, saveBirthDate, clearBirthDate, message, ready } =
     useBirthDate();
   const birthInput = useRef<HTMLButtonElement>(null);
+  const [horizon, setHorizon] = useState(NUMBER_OF_YEARS_BY_LIFE);
+  const [horizonDraft, setHorizonDraft] = useState(String(horizon));
+  const [horizonError, setHorizonError] = useState("");
+  const horizonInput = useRef<HTMLInputElement>(null);
+  const horizonId = useId();
   const today = useCurrentDay();
   const weekList = useMemo(
-    () => (birthDate ? buildWeekList(birthDate, today) : []),
-    [birthDate, today],
+    () => (birthDate ? buildWeekList(birthDate, today, horizon) : []),
+    [birthDate, today, horizon],
   );
   const currentWeek = weekList.find((week) => week.state === "current");
   const currentDay = parseISO(today);
@@ -87,6 +95,80 @@ export function LifeCalendar() {
                 Effacer ma date
               </Button>
             )}
+
+            <form
+              className="mt-6"
+              noValidate
+              onSubmit={(event) => {
+                event.preventDefault();
+                const value = Number(horizonDraft);
+
+                if (!isValidHorizon(value)) {
+                  setHorizonError("Choisis un âge entier entre 1 et 120 ans.");
+                  horizonInput.current?.focus();
+
+                  return;
+                }
+                setHorizon(value);
+                setHorizonDraft(String(value));
+                setHorizonError("");
+                horizonInput.current?.focus();
+              }}
+            >
+              <label className="mb-3 block font-medium" htmlFor={horizonId}>
+                Horizon du calendrier (ans)
+              </label>
+
+              <Input
+                aria-describedby={`${horizonId}-note${horizonError ? ` ${horizonId}-error` : ""}`}
+                aria-invalid={horizonError ? true : undefined}
+                className="min-h-12 text-base"
+                id={horizonId}
+                max={120}
+                min={1}
+                onChange={(event) => setHorizonDraft(event.target.value)}
+                ref={horizonInput}
+                step={1}
+                type="number"
+                value={horizonDraft}
+              />
+
+              <p className="story-note" id={`${horizonId}-note`}>
+                Cet horizon est un repère personnel, pas une prédiction.
+                <span className="block">
+                  Ce choix s’applique à la visite en cours.
+                </span>
+              </p>
+
+              {horizonError && (
+                <p
+                  className="story-note"
+                  id={`${horizonId}-error`}
+                  role="alert"
+                >
+                  {horizonError}
+                </p>
+              )}
+
+              <div className="mt-3 flex flex-wrap gap-3">
+                <Button className="story-button" type="submit">
+                  Appliquer
+                </Button>
+
+                <Button
+                  className="story-button"
+                  onClick={() => {
+                    setHorizon(NUMBER_OF_YEARS_BY_LIFE);
+                    setHorizonDraft(String(NUMBER_OF_YEARS_BY_LIFE));
+                    setHorizonError("");
+                  }}
+                  type="button"
+                  variant="outline"
+                >
+                  Revenir à 90 ans
+                </Button>
+              </div>
+            </form>
 
             {!birthDate && (
               <p className="story-note">
@@ -199,10 +281,14 @@ export function LifeCalendar() {
               <p className="story-note mb-6">
                 {currentWeek
                   ? `Semaine actuelle : semaine ${currentWeek.number}, dans l’année d’âge de ${currentWeek.age} ${currentWeek.age === 1 ? "an" : "ans"} (repère A).`
-                  : "Tu as dépassé l'horizon de ce calendrier"}
+                  : "Tu as dépassé l'horizon choisi"}
               </p>
 
-              <Calendar key={birthDate} weekList={weekList} />
+              <Calendar
+                horizon={horizon}
+                key={`${birthDate}-${horizon}`}
+                weekList={weekList}
+              />
 
               {birthDate.endsWith("02-29") && (
                 <p className="story-note">
@@ -222,8 +308,7 @@ export function LifeCalendar() {
           )}
 
           <p className="story-note mt-6">
-            Ce calendrier va jusqu’à ton 90ᵉ anniversaire. C’est un horizon de
-            représentation, pas une estimation de ta durée de vie.
+            {`Ce calendrier va jusqu’à ton ${horizon === 1 ? "1er" : `${horizon}ᵉ`} anniversaire. C’est un horizon de représentation, pas une estimation de ta durée de vie.`}
           </p>
         </div>
       </div>

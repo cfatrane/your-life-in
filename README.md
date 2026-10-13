@@ -2,7 +2,9 @@
 
 Une application web en français pour prendre du recul sur le temps d’une vie.
 Saisis ta date de naissance pour visualiser les semaines déjà vécues dans un
-calendrier couvrant 90 ans et consulter le temps écoulé depuis ta naissance.
+calendrier dont tu choisis l’horizon de 1 à 120 ans (90 ans par défaut), et
+consulter le temps écoulé depuis ta naissance. Cet horizon est un repère
+personnel, pas une prédiction. Le choix d’horizon s’applique à la visite en cours.
 
 L’application fonctionne sans compte. Ta date de naissance est mémorisée
 localement dans ton navigateur pour être retrouvée entre les visites, et tu peux

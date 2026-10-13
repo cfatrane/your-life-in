@@ -1,9 +1,6 @@
 import { useId, useLayoutEffect, useRef, useState } from "react";
 
-import {
-  MAX_WEEKS_BY_AGE,
-  NUMBER_OF_YEARS_BY_LIFE,
-} from "@/features/life-calendar/constants";
+import { MAX_WEEKS_BY_AGE } from "@/features/life-calendar/constants";
 import { describeWeek } from "@/features/life-calendar/lib/describe-week";
 import { anniversary } from "@/features/life-calendar/lib/life-dates";
 import { WeekCell } from "@/features/life-calendar/types";
@@ -14,13 +11,18 @@ import { Button } from "@/components/ui/button";
 
 import { WeekList } from "./week-list";
 
-export function Calendar({ weekList }: { weekList: WeekCell[] }) {
-  const years = Array.from(
-    { length: NUMBER_OF_YEARS_BY_LIFE },
-    () => [] as WeekCell[],
-  );
+export function Calendar({
+  weekList,
+  horizon,
+}: {
+  weekList: WeekCell[];
+  horizon: number;
+}) {
+  const years = Array.from({ length: horizon }, () => [] as WeekCell[]);
 
   for (const week of weekList) years[week.age].push(week);
+  const chartHeight =
+    41 + (horizon - 1) * 7 + Math.floor((horizon - 1) / 10) * 9;
   const chart = useRef<SVGSVGElement>(null);
   const [width, setWidth] = useState(300);
 
@@ -68,12 +70,15 @@ export function Calendar({ weekList }: { weekList: WeekCell[] }) {
           className="life-points"
           ref={chart}
           role="img"
-          viewBox={`0 0 ${width} 736`}
+          style={{ height: chartHeight }}
+          viewBox={`0 0 ${width} ${chartHeight}`}
         >
-          <title id={`${id}-title`}>Aperçu des 90 années</title>
+          <title
+            id={`${id}-title`}
+          >{`Aperçu ${horizon === 1 ? "de 1 année" : `des ${horizon} années`}`}</title>
 
           <desc id={`${id}-description`}>
-            {`De 0 à 89 ans. ${current ? `Semaine actuelle : ${current.number}, à ${current.age} ans, repère A.` : "Toutes les semaines sont écoulées : horizon de 90 ans dépassé."} Les grands points sont écoulés, les petits points sont à venir. Lis de gauche à droite, puis de haut en bas.`}
+            {`De 0 à ${horizon - 1} ans. ${current ? `Semaine actuelle : ${current.number}, à ${current.age} ans, repère A.` : `Toutes les semaines sont écoulées : horizon de ${horizon} ${horizon === 1 ? "an" : "ans"} dépassé.`} Les grands points sont écoulés, les petits points sont à venir. Lis de gauche à droite, puis de haut en bas.`}
           </desc>
 
           {years.map((year, index) => {
@@ -84,7 +89,7 @@ export function Calendar({ weekList }: { weekList: WeekCell[] }) {
               <g aria-hidden="true" data-age={index} key={index}>
                 {(index % 10 === 0 ||
                   index === current?.age ||
-                  index === 89) && (
+                  index === horizon - 1) && (
                   <text
                     className={
                       current?.age === index
