@@ -12,7 +12,7 @@ Le produit s’adresse en priorité au grand public francophone. Il accompagne l
 
 ## Product Purpose
 
-Your Life In Weeks permet à une personne de saisir sa date de naissance, de visualiser les semaines qu’elle a déjà vécues dans une grille couvrant 90 ans et de voir le temps écoulé depuis sa naissance.
+Your Life In Weeks permet à une personne de saisir sa date de naissance, de visualiser les semaines qu’elle a déjà vécues dans une grille dont elle choisit l’horizon entre 1 et 120 ans, avec 90 ans par défaut, et de voir le temps écoulé depuis sa naissance. Cet horizon est un repère personnel, pas une prédiction de durée de vie.
 
 Le produit réussit lorsqu’il transforme une notion abstraite — le temps d’une vie — en une représentation immédiatement compréhensible qui provoque réflexion et intention.
 
@@ -28,15 +28,16 @@ L’interface est destinée à être proposée en français par défaut. Le nom 
 
 ## Capabilities and Constraints
 
-- La grille couvre 90 années à raison de 52 semaines par année.
+- La grille couvre l’horizon choisi, de la naissance incluse à l’anniversaire correspondant exclu. Les semaines suivent les jours civils ; une année d’âge contient 52 ou 53 débuts de semaine et la dernière case peut être tronquée.
 - Le produit fonctionne sans compte et sans stockage serveur de la date de naissance.
-- La date de naissance doit pouvoir être mémorisée uniquement sur l’appareil afin d’être retrouvée entre les visites. Cette persistance locale est un engagement produit confirmé, mais elle n’est pas encore implémentée.
-- L’implémentation actuelle affiche également un compteur détaillé du temps écoulé et des périodes de vie inspirées du parcours scolaire et professionnel français. Ces éléments sont évolutifs et ne constituent pas des invariants produit.
+- La naissance et l’horizon sont mémorisés uniquement dans ce navigateur et peuvent être effacés ensemble. Si le stockage échoue, le calendrier reste utilisable pour la visite avec un message explicite.
+- Le compteur et les repères d’anniversaire représentent le temps réellement vécu, indépendamment de l’horizon choisi.
+- Cinq conseils santé généraux pour adultes sont accessibles sans naissance, avec des sources institutionnelles. Ils ne recueillent aucun renseignement de santé et ne calculent aucune durée de vie individuelle.
 
 ## Brand Commitments
 
 - Le nom actuel est « Your Life In Weeks ».
-- La représentation d’une vie sous la forme d’une grille de semaines couvrant 90 ans doit être préservée.
+- La représentation d’une vie sous la forme d’une grille de semaines doit être préservée, avec 90 ans comme horizon par défaut.
 - L’inspiration de « Your Life in Weeks » par Wait But Why doit rester explicitement attribuée.
 - L’expérience s’adresse en français au public prioritaire, même si le nom du produit reste en anglais.
 
@@ -54,5 +55,5 @@ Aucun témoignage, cas client, benchmark, donnée d’usage ou autre preuve soci
 1. Privilégier la prise de conscience et la réflexion plutôt que l’accumulation de fonctionnalités.
 2. Rendre le concept compréhensible dès la première interaction.
 3. Demander le minimum d’informations nécessaire pour personnaliser la visualisation.
-4. Protéger la vie privée en conservant la date de naissance uniquement sur l’appareil.
+4. Protéger la vie privée en conservant les réglages uniquement dans le navigateur.
 5. Rester fidèle au concept source et maintenir une attribution explicite à Wait But Why.
