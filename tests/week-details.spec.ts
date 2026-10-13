@@ -6,6 +6,9 @@ test.beforeEach(async ({ page }) => {
   await page.clock.setFixedTime(new Date("2026-01-08T12:00:00+01:00"));
   await page.goto("/");
   await chooseDate(page, "2026-01-01", "jeudi 1 janvier 2026");
+  await expect(
+    page.getByRole("button", { name: "Date de naissance : 1 janvier 2026" }),
+  ).toBeFocused();
   await page.getByRole("button", { name: "Explorer cette année" }).click();
 });
 
@@ -153,6 +156,6 @@ test("les détails actualisent leur état avec le jour courant et se réinitiali
   await page.getByRole("button", { name: "Explorer cette année" }).click();
   await expect(details).toContainText("Sélectionne une semaine");
   await page.getByRole("button", { name: /^Semaine 1,/ }).click();
-  await page.getByRole("button", { name: "Effacer ma date" }).click();
+  await page.getByRole("button", { name: "Effacer mes données" }).click();
   await expect(details).toBeHidden();
 });

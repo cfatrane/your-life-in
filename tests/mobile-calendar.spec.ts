@@ -119,7 +119,7 @@ test("la date restaurée ouvre l’année actuelle et son changement réinitiali
   ).toBeFocused();
   await page.keyboard.press("Enter");
   await expect(explore).toBeFocused();
-  await page.getByRole("button", { name: "Effacer ma date" }).click();
+  await page.getByRole("button", { name: "Effacer mes données" }).click();
   await expect(overview).toBeHidden();
   await expect(
     page.getByRole("button", { name: "Sélectionne ta date de naissance" }),

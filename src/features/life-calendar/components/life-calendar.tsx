@@ -1,14 +1,14 @@
 "use client";
 
-import { useId, useMemo, useRef, useState } from "react";
+import { useEffect, useId, useMemo, useRef, useState } from "react";
 
 import { BirthDateInput } from "@/features/life-calendar/components/birth-date-input";
 import { Calendar } from "@/features/life-calendar/components/calendar";
 import { Legend } from "@/features/life-calendar/components/legend";
 import { TimeSinceBirth } from "@/features/life-calendar/components/time-since-birth";
 import { NUMBER_OF_YEARS_BY_LIFE } from "@/features/life-calendar/constants";
-import { useBirthDate } from "@/features/life-calendar/hooks/use-birth-date";
 import { useCurrentDay } from "@/features/life-calendar/hooks/use-current-day";
+import { useLifeSettings } from "@/features/life-calendar/hooks/use-life-settings";
 import { buildWeekList } from "@/features/life-calendar/lib/build-week-list";
 import { isValidHorizon } from "@/features/life-calendar/lib/calendar-horizon";
 import { lifeSummary } from "@/features/life-calendar/lib/life-dates";
@@ -22,10 +22,18 @@ const dateLabel = (date: Date) => format(date, "d MMMM yyyy", { locale: fr });
 const numberLabel = (number: number) => number.toLocaleString("fr-FR");
 
 export function LifeCalendar() {
-  const { birthDate, saveBirthDate, clearBirthDate, message, ready } =
-    useBirthDate();
+  const {
+    birthDate,
+    saveBirthDate,
+    horizon,
+    saveHorizon,
+    clearSettings,
+    message,
+    horizonMessage,
+    clearMessage,
+    ready,
+  } = useLifeSettings();
   const birthInput = useRef<HTMLButtonElement>(null);
-  const [horizon, setHorizon] = useState(NUMBER_OF_YEARS_BY_LIFE);
   const [horizonDraft, setHorizonDraft] = useState(String(horizon));
   const [horizonError, setHorizonError] = useState("");
   const horizonInput = useRef<HTMLInputElement>(null);
@@ -39,6 +47,10 @@ export function LifeCalendar() {
   const currentDay = parseISO(today);
   const birth = birthDate ? parseISO(birthDate) : null;
   const summary = birth ? lifeSummary(birth, currentDay) : null;
+
+  useEffect(() => {
+    setHorizonDraft(String(horizon));
+  }, [horizon]);
 
   return (
     <>
@@ -82,20 +94,6 @@ export function LifeCalendar() {
               {message}
             </p>
 
-            {(birthDate || message.startsWith("L’effacement")) && (
-              <Button
-                className="story-button mt-3"
-                disabled={!ready}
-                onClick={() => {
-                  clearBirthDate();
-                  birthInput.current?.focus();
-                }}
-                variant="ghost"
-              >
-                Effacer ma date
-              </Button>
-            )}
-
             <form
               className="mt-6"
               noValidate
@@ -109,7 +107,7 @@ export function LifeCalendar() {
 
                   return;
                 }
-                setHorizon(value);
+                saveHorizon(value);
                 setHorizonDraft(String(value));
                 setHorizonError("");
                 horizonInput.current?.focus();
@@ -123,6 +121,7 @@ export function LifeCalendar() {
                 aria-describedby={`${horizonId}-note${horizonError ? ` ${horizonId}-error` : ""}`}
                 aria-invalid={horizonError ? true : undefined}
                 className="min-h-12 text-base"
+                disabled={!ready}
                 id={horizonId}
                 max={120}
                 min={1}
@@ -136,7 +135,7 @@ export function LifeCalendar() {
               <p className="story-note" id={`${horizonId}-note`}>
                 Cet horizon est un repère personnel, pas une prédiction.
                 <span className="block">
-                  Ce choix s’applique à la visite en cours.
+                  La sauvegarde concerne uniquement ce navigateur.
                 </span>
               </p>
 
@@ -151,14 +150,19 @@ export function LifeCalendar() {
               )}
 
               <div className="mt-3 flex flex-wrap gap-3">
-                <Button className="story-button" type="submit">
+                <Button
+                  className="story-button"
+                  disabled={!ready}
+                  type="submit"
+                >
                   Appliquer
                 </Button>
 
                 <Button
                   className="story-button"
+                  disabled={!ready}
                   onClick={() => {
-                    setHorizon(NUMBER_OF_YEARS_BY_LIFE);
+                    saveHorizon(NUMBER_OF_YEARS_BY_LIFE);
                     setHorizonDraft(String(NUMBER_OF_YEARS_BY_LIFE));
                     setHorizonError("");
                   }}
@@ -169,6 +173,36 @@ export function LifeCalendar() {
                 </Button>
               </div>
             </form>
+
+            <p
+              aria-label="Sauvegarde de l’horizon du calendrier"
+              className="story-note"
+              role="status"
+            >
+              {horizonMessage}
+            </p>
+
+            <Button
+              className="story-button mt-3"
+              disabled={!ready}
+              onClick={() => {
+                clearSettings();
+                setHorizonDraft(String(NUMBER_OF_YEARS_BY_LIFE));
+                setHorizonError("");
+                birthInput.current?.focus();
+              }}
+              variant="ghost"
+            >
+              Effacer mes données
+            </Button>
+
+            <p
+              aria-label="Effacement des données"
+              className="story-note"
+              role="status"
+            >
+              {clearMessage}
+            </p>
 
             {!birthDate && (
               <p className="story-note">

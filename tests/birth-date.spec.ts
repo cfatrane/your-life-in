@@ -121,7 +121,7 @@ test("saisir, modifier, retrouver puis effacer sa date après rechargement", asy
     page.getByRole("button", { name: "Date de naissance : 2 février 2001" }),
   ).toBeVisible();
   await expect(page.getByText(/^25 ans 8 mois 9 jours/)).toBeVisible();
-  await page.getByRole("button", { name: "Effacer ma date" }).focus();
+  await page.getByRole("button", { name: "Effacer mes données" }).focus();
   await page.keyboard.press("Enter");
   await expect(
     page.getByRole("region", { name: "Calendrier de vie" }),
@@ -221,12 +221,14 @@ test("un effacement refusé avertit que la date peut revenir et reste réessayab
 }) => {
   await chooseDate(page, "2000-01-01", "samedi 1 janvier 2000");
   await refuseStorage(page, "removeItem");
-  await page.getByRole("button", { name: "Effacer ma date" }).click();
+  await page.getByRole("button", { name: "Effacer mes données" }).click();
   await expect(
-    page.getByRole("status", { name: "Sauvegarde de la date de naissance" }),
+    page.getByRole("status", { name: "Effacement des données" }),
   ).toContainText("L’effacement n’a pas pu être confirmé");
   await expect(
-    page.getByText("Ta date a été effacée de cet appareil.", { exact: true }),
+    page.getByText("Tes données ont été effacées de cet appareil.", {
+      exact: true,
+    }),
   ).toBeHidden();
   await expect(
     page.getByRole("button", { name: "Sélectionne ta date de naissance" }),
@@ -242,7 +244,7 @@ test("un effacement refusé avertit que la date peut revenir et reste réessayab
   await expect(
     page.getByRole("region", { name: "Calendrier de vie" }),
   ).toBeVisible();
-  await page.getByRole("button", { name: "Effacer ma date" }).click();
+  await page.getByRole("button", { name: "Effacer mes données" }).click();
   await page.reload();
   await expect(
     page.getByRole("button", { name: "Sélectionne ta date de naissance" }),

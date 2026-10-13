@@ -167,6 +167,9 @@ test("les horizons extrêmes restent cadrés, la modification ferme le détail e
     ).toContainText(horizon === 1 ? "31 décembre 2000" : "31 décembre 2119");
   }
   await chooseDate(page, "2000-01-02", "dimanche 2 janvier 2000");
+  await expect(
+    page.getByRole("button", { name: "Date de naissance : 2 janvier 2000" }),
+  ).toBeFocused();
   await expect(input).toHaveValue("120");
   await expect(
     page.getByRole("img", { name: "Aperçu des 120 années" }),
