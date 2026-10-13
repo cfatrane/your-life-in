@@ -127,12 +127,15 @@ test("les horizons extrêmes restent cadrés, la modification ferme le détail e
       expect(
         await page.evaluate(() => document.documentElement.scrollWidth),
       ).toBeLessThanOrEqual(width);
-      const lastPoint = overview.locator("circle[data-week]").last();
-      const lastBox = (await lastPoint.boundingBox())!;
+      const geometry = await overview.evaluate((element) => {
+        const chart = element.getBoundingClientRect();
+        const points = element.querySelectorAll("circle[data-week]");
+        const last = points[points.length - 1].getBoundingClientRect();
 
-      expect(lastBox.y + lastBox.height).toBeLessThanOrEqual(
-        box.y + box.height,
-      );
+        return { chartBottom: chart.bottom, lastBottom: last.bottom };
+      });
+
+      expect(geometry.lastBottom).toBeLessThanOrEqual(geometry.chartBottom);
 
       for (const control of [
         input,
