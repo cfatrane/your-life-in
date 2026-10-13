@@ -6,10 +6,14 @@ import {
 import { WeekCell } from "@/features/life-calendar/types";
 import { addDays, parseISO } from "date-fns";
 
-export function buildWeekList(birthDate: string, today: string): WeekCell[] {
+export function buildWeekList(
+  birthDate: string,
+  today: string,
+  horizonYears = NUMBER_OF_YEARS_BY_LIFE,
+): WeekCell[] {
   const birth = parseISO(birthDate);
   const currentDay = parseISO(today);
-  const horizon = anniversary(birth, NUMBER_OF_YEARS_BY_LIFE);
+  const horizon = anniversary(birth, horizonYears);
   const weeks: WeekCell[] = [];
 
   for (let start = birth; start < horizon; start = addDays(start, 7)) {

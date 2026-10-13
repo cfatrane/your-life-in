@@ -2,11 +2,15 @@
 
 Une application web en français pour prendre du recul sur le temps d’une vie.
 Saisis ta date de naissance pour visualiser les semaines déjà vécues dans un
-calendrier couvrant 90 ans et consulter le temps écoulé depuis ta naissance.
+calendrier dont tu choisis l’horizon de 1 à 120 ans (90 ans par défaut), et
+consulter le temps écoulé depuis ta naissance. Cet horizon est un repère
+personnel, pas une prédiction. Le choix d’horizon reste mémorisé dans ce navigateur.
 
-L’application fonctionne sans compte. Ta date de naissance est mémorisée
-localement dans ton navigateur pour être retrouvée entre les visites, et tu peux
-l’effacer à tout moment.
+L’application fonctionne sans compte. Ta date de naissance et ton horizon sont mémorisés
+localement dans ton navigateur pour être retrouvés entre les visites.
+« Revenir à 90 ans » conserve ta naissance ; « Effacer mes données » supprime
+les deux réglages. Si le stockage est refusé, le calendrier reste utilisable
+pour la visite et un message signale l’échec.
 
 Essayer : [https://your-life-in.vercel.app/](https://your-life-in.vercel.app/)
 
@@ -30,5 +34,5 @@ bun run typecheck
 ```
 
 Les tests navigateur lancent le serveur local sur le port 3075. Ils vérifient
-la saisie, la restauration et l’effacement de la date, ainsi que les erreurs
+la saisie, la restauration et l’effacement de la date et de l’horizon, ainsi que les erreurs
 de stockage, avec une date courante contrôlée.

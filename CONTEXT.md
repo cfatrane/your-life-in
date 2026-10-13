@@ -28,7 +28,7 @@ Semaine de vie contenant le jour courant.
 Semaine de vie dont la date de début est postérieure au jour courant.
 
 **Horizon du calendrier** :
-Période affichée allant de la naissance incluse au 90ᵉ anniversaire exclu. Il s'agit d'une limite de représentation, pas d'une estimation de durée de vie.
+Période affichée allant de la naissance incluse à l’anniversaire choisi exclu (âge entier de 1 à 120 ans, 90 ans par défaut). Il s'agit d'une limite de représentation, pas d'une estimation de durée de vie.
 
 **Dernière case** :
-Portion de la dernière semaine de vie située dans l'horizon du calendrier. Elle peut représenter moins de sept jours et devient écoulée au 90ᵉ anniversaire.
+Portion de la dernière semaine de vie située dans l'horizon du calendrier. Elle peut représenter moins de sept jours et devient écoulée à l’anniversaire choisi.
