@@ -32,3 +32,9 @@ Période affichée allant de la naissance incluse à l’anniversaire choisi exc
 
 **Dernière case** :
 Portion de la dernière semaine de vie située dans l'horizon du calendrier. Elle peut représenter moins de sept jours et devient écoulée à l’anniversaire choisi.
+
+**Population de référence** :
+Population définie par un territoire, une année et le périmètre démographique de la source. Elle ne représente ni une personne ni toute une culture.
+
+**Espérance de vie à la naissance** :
+Indicateur de période : durée de vie moyenne d’une population fictive exposée, à chaque âge, aux conditions de mortalité de la période, mortalité infantile comprise. Ni prédiction individuelle ni suivi réel de la génération née cette année-là.
