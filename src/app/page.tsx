@@ -1,5 +1,6 @@
 import { HealthInformation } from "@/features/life-calendar/components/health-information";
 import { LifeCalendar } from "@/features/life-calendar/components/life-calendar";
+import { TimeTravel } from "@/features/time-travel/components/time-travel";
 
 import { Button } from "@/components/ui/button";
 
@@ -84,6 +85,8 @@ export default function Home() {
       </section>
 
       <LifeCalendar />
+
+      <TimeTravel />
 
       <HealthInformation />
     </>
