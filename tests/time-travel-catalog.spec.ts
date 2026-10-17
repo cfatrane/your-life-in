@@ -5,28 +5,30 @@ import {
   populationSource,
 } from "../src/features/time-travel/data/population-references";
 
-test("les références France correspondent au relevé officiel WPP 2024", () => {
-  expect(populationReferences).toEqual([
-    expect.objectContaining({
-      id: "france-1950",
-      country: "France",
-      year: 1950,
-      value: 66.382,
-      sourceCell: "AI14970",
-      locationCode: 250,
-    }),
-    expect.objectContaining({
-      id: "france-2020",
-      country: "France",
-      year: 2020,
-      value: 82.199,
-      sourceCell: "AI15040",
-      locationCode: 250,
-    }),
-  ]);
+test("les neuf populations de référence correspondent au relevé officiel WPP 2024", () => {
+  expect(populationReferences).toEqual(
+    [
+      ["france-1950", "France", 1950, 66.382, 250, "AI14970"],
+      ["france-1980", "France", 1980, 74.234, 250, "AI15000"],
+      ["france-2020", "France", 2020, 82.199, 250, "AI15040"],
+      ["royaume-uni-1950", "Royaume-Uni", 1950, 68.631, 826, "AI13342"],
+      ["royaume-uni-1980", "Royaume-Uni", 1980, 73.591, 826, "AI13372"],
+      ["royaume-uni-2020", "Royaume-Uni", 2020, 80.385, 826, "AI13412"],
+      ["japon-1950", "Japon", 1950, 59.255, 392, "AI8162"],
+      ["japon-1980", "Japon", 1980, 76.141, 392, "AI8192"],
+      ["japon-2020", "Japon", 2020, 84.67, 392, "AI8232"],
+    ].map(([id, country, year, value, locationCode, sourceCell]) => ({
+      id,
+      country,
+      year,
+      value,
+      locationCode,
+      sourceCell,
+    })),
+  );
   expect(
     new Set(populationReferences.map((reference) => reference.id)).size,
-  ).toBe(2);
+  ).toBe(9);
 
   for (const reference of populationReferences) {
     expect(Number.isFinite(reference.value)).toBe(true);
@@ -54,7 +56,7 @@ test("une donnée invalide ou absente affiche une indisponibilité sans résulta
     populationReferences.slice(0, 1),
     ...[NaN, Infinity, 0, -1].map((value) => [
       { ...populationReferences[0], value },
-      populationReferences[1],
+      populationReferences.find(({ id }) => id === "france-2020")!,
     ]),
   ]) {
     const html = renderToStaticMarkup(

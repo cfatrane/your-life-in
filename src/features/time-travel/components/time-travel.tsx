@@ -131,7 +131,8 @@ export function TimeTravel({
         <div className="mt-8 grid gap-4 border-t pt-6">
           <p className="text-sm">
             Périmètre France : hors territoires ultramarins listés par l’ONU
-            dans la source.
+            dans la source. Périmètre Royaume-Uni : Grande-Bretagne et Irlande
+            du Nord, hors dépendances listées par l’ONU dans la source.
           </p>
 
           <p>
