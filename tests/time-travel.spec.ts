@@ -106,12 +106,14 @@ test("les neuf choix permettent de comparer les pays et les périodes avec les v
       references.map(([, label]) => label),
     );
     await select.focus();
+
     for (const [id, label, value] of references) {
       await select.selectOption(id);
       await expect(select).toBeFocused();
       await expect(result).toContainText(`${label} : ${value} ans`);
     }
   }
+
   // Même pays, deux dates ; deux pays, même date ; pays et dates distincts.
   for (const [firstId, secondId, difference] of [
     ["japon-1950", "japon-2020", "+25,4 ans"],
